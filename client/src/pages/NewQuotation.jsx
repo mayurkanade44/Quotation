@@ -65,6 +65,8 @@ const NewQuotation = () => {
     }
   };
 
+  const editShipToDetails = () => {};
+
   if (loading || isLoading) return <Loading />;
 
   return (
@@ -157,7 +159,7 @@ const NewQuotation = () => {
             handleBack={() => handleBack("Bill To Details")}
           />
         ) : (
-          <div className="mx-16">
+          <div className="lg:mx-16">
             <h1 className="text-center text-xl font-medium">
               Quotation Preview
             </h1>
@@ -174,7 +176,7 @@ const NewQuotation = () => {
                 Payment Terms: {quotationDetails.generalDetails.payment}
               </h5>
             </div>
-            <div className="md:flex justify-start gap-x-4 my-4">
+            <div className="lg:flex justify-start gap-x-4 my-4">
               <h5 className="text-lg">
                 Bill To Name:{" "}
                 {`${quotationDetails.billToDetails.prefix.label} ${quotationDetails.billToDetails.name}`}
@@ -194,7 +196,7 @@ const NewQuotation = () => {
             </div>
             {quotationDetails.shipToDetails.map((item, index) => (
               <div key={index}>
-                <div className="md:flex justify-start gap-x-4 my-4">
+                <div className="lg:flex justify-start items-center gap-x-4 my-4">
                   <h5 className="text-lg">
                     Ship To Name: {`${item.prefix.label} ${item.name}`}
                   </h5>
@@ -206,6 +208,7 @@ const NewQuotation = () => {
                     Primary Contact:{" "}
                     {`${item.contact[0].name} / ${item.contact[0].number} / ${item.contact[0].email}`}
                   </h5>
+                  <Button label="Edit" />
                 </div>
                 <div className="overflow-y-auto">
                   <table className="min-w-full border text-center text-sm font-light dark:border-neutral-500">
@@ -250,16 +253,13 @@ const NewQuotation = () => {
                 </div>
               </div>
             ))}
-            <Button
-              label="Back"
-              color="bg-gray-700"
-              handleClick={() => handleBack("Ship To Details")}
-            />
-            <Button
-              label="Create Quotation"
-              color="bg-green-600"
-              handleClick={handleCreateQuotation}
-            />
+            <div className="flex justify-center mt-5">
+              <Button
+                label="Create Quotation"
+                color="bg-green-600"
+                handleClick={handleCreateQuotation}
+              />
+            </div>
           </div>
         )}
       </div>

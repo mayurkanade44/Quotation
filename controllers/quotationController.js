@@ -9,7 +9,7 @@ export const createQuotation = async (req, res) => {
     const quotation = await Quotation.create(req.body);
 
     const clientName = `${quotation.billToDetails.prefix.label}. ${quotation.billToDetails.name}`;
-    const template = fs.readFileSync("./tmp/quotation1.docx");
+    const template = fs.readFileSync("./tmp/quotation.docx");
 
     const buffer = await createReport({
       cmdDelimiter: ["{", "}"],

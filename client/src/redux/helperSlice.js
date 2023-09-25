@@ -9,7 +9,7 @@ const initialState = {
     billToDetails: {},
     shipDetails: null,
     shipToDetails: [],
-    edit: true,
+    edit: false,
   },
 };
 
@@ -25,17 +25,11 @@ const helperSlice = createSlice({
       state.user = null;
       localStorage.clear();
     },
-    setBillDetails: (state, action) => {
-      state.billDetails = action.payload;
-    },
+
     setQuotationDetails: (state, action) => {
-      const { name, data, id } = action.payload;
-      if (name === "shipDetails") {
-        if (id >= 0) {
-          state.quotationDetails.shipToDetails[id] = data;
-        } else {
-          state.quotationDetails.shipToDetails.push(data);
-        }
+      const { name, data } = action.payload;
+      if (name === "shipDetails" || name === "Add Ship To") {
+        state.quotationDetails.shipToDetails.push(data);
       }
       state.quotationDetails[name] = data;
     },
@@ -48,7 +42,6 @@ const helperSlice = createSlice({
 export const {
   setCredentials,
   removeCredentials,
-  setBillDetails,
   setQuotationDetails,
   editQuotationDetails,
 } = helperSlice.actions;

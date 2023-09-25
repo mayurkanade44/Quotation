@@ -8,10 +8,13 @@ import {
 } from "../../utils/constData";
 import { useDispatch, useSelector } from "react-redux";
 import { setQuotationDetails } from "../../redux/helperSlice";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
 const ShipToDetails = ({ handleNext, handleBack }) => {
   const dispatch = useDispatch();
   const { quotationDetails } = useSelector((store) => store.helper);
+  const [newShip, setNewShip] = useState("");
 
   const {
     register,
@@ -66,12 +69,15 @@ const ShipToDetails = ({ handleNext, handleBack }) => {
   };
 
   const submit = (data) => {
-    if (quotationDetails.edit) {
-      dispatch(setQuotationDetails({ name: "shipDetails", data, id: 0 }));
+    dispatch(setQuotationDetails({ name: "shipDetails", data }));
+    console.log(newShip);
+    if (newShip === "Add New") {
+      reset();
+      toast.success("New Ship To Details Added");
     } else {
-      dispatch(setQuotationDetails({ name: "shipDetails", data }));
+      handleNext();
     }
-    handleNext();
+    setNewShip("");
   };
 
   return (
@@ -398,9 +404,18 @@ const ShipToDetails = ({ handleNext, handleBack }) => {
 
       <hr className="h-px my-3 mb-2 border-0 dark:bg-gray-700" />
       <div className="flex justify-center">
-        <Button label="Add New Ship To Details" />
-        <Button type="submit" label="Next" color="bg-green-600" />
-        <Button label="Back" color="bg-gray-700" handleClick={handleBack} />
+        <Button
+          type="submit"
+          label="Add New Ship To Details"
+          handleClick={(e) => setNewShip("Add New")}
+        />
+        <Button
+          type="submit"
+          label="Submit"
+          color="bg-green-600"
+          handleClick={(e) => setNewShip("Submit")}
+        />
+        <Button label="Back" color="bg-gray-700" />
       </div>
     </form>
   );
