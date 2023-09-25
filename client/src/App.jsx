@@ -7,8 +7,8 @@ import {
 } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Quotation from "./pages/Quotation";
-import NewQuotation from "./pages/NewQuotation";
+
+import { NewQuotation } from "./pages";
 
 function App() {
   const Layout = () => {
@@ -22,8 +22,7 @@ function App() {
   const Router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<Layout />}>
-        <Route path="/new-quotation" element={<Quotation />} />
-        <Route path="/quotation" element={<NewQuotation />} />
+        <Route path="/new-quotation" element={<NewQuotation />} />
       </Route>
     )
   );

@@ -1,0 +1,29 @@
+const InputTextarea = ({
+  label,
+  register,
+  id,
+  placeholder,
+  required = true,
+  rows = 3
+}) => {
+  return (
+    <div className="relative mt-2">
+      <label
+        htmlFor={id}
+        className="block text-md font-medium leading-6 text-gray-900"
+      >
+        {label}
+        {required && (
+          <span className="text-red-500 required-dot ml-0.5">*</span>
+        )}
+      </label>
+      <textarea
+        className={`mt-0.5 w-full py-0.5 px-2 border-2 rounded-md outline-none transition border-neutral-300 focus:border-black`}
+        placeholder={placeholder}
+        rows={rows}
+        {...register(id, { required: required })}
+      />
+    </div>
+  );
+};
+export default InputTextarea;
