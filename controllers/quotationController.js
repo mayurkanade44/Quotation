@@ -42,3 +42,35 @@ export const createQuotation = async (req, res) => {
     res.status(500).json({ msg: "Server error, try again later" });
   }
 };
+
+export const getAllQuotation = async (req, res) => {
+  const { search, page } = req.query;
+  let query = {};
+  if (search) {
+    query = {
+      $or: [
+        { number: { $regex: search, $options: "i" } },
+        { "shipToDetails.name": { $regex: search, $options: "i" } },
+        { "billToDetails.name": { $regex: search, $options: "i" } },
+        {
+          "billToDetails.contact": {
+            $elemMatch: { number: { $regex: search, $options: "i" } },
+          },
+        },
+        {
+          "shipToDetails.contact": {
+            $elemMatch: { number: { $regex: search, $options: "i" } },
+          },
+        },
+      ],
+    };
+  }
+  try {
+    const quotation = await Quotation.find(query).sort("-createdAt");
+
+    return res.json(quotation);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "Server error, try again later" });
+  }
+};

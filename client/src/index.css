@@ -14,3 +14,13 @@
   align-items: center;
   justify-content: center;
 }
+
+.container {
+  margin: 20px 40px ;
+}
+
+@media (max-width: 767px) {
+  .container {
+    margin: 5px 20px;
+  }
+}

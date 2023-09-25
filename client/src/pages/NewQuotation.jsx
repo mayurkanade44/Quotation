@@ -76,7 +76,7 @@ const NewQuotation = () => {
 
   return (
     <>
-      <nav aria-label="Progress" className="mx-5 md:mx-10 md:my-5">
+      <nav aria-label="Progress" className="container">
         <ol
           role="list"
           className="divide-y divide-gray-300 rounded-md border border-gray-300 md:flex md:divide-y-0"

@@ -1,4 +1,4 @@
-import mongoose, { Mongoose } from "mongoose";
+import mongoose from "mongoose";
 
 const shipToSchema = new mongoose.Schema({
   prefix: { type: Object, required: true },
