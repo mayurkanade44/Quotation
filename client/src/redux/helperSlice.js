@@ -31,9 +31,7 @@ const helperSlice = createSlice({
     setQuotationDetails: (state, action) => {
       const { name, data, id } = action.payload;
       if (name === "shipDetails") {
-        console.log(id);
         if (id >= 0) {
-          console.log(state.quotationDetails.shipToDetails[id]);
           state.quotationDetails.shipToDetails[id] = data;
         } else {
           state.quotationDetails.shipToDetails.push(data);
