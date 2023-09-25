@@ -6,9 +6,10 @@ import {
   ShipToDetails,
 } from "../components/QuotationForm";
 import { AiOutlineCheck, AiOutlineCheckCircle } from "react-icons/ai";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useCreateQuotationMutation } from "../redux/quotationSlice";
 import { toast } from "react-toastify";
+import { setQuotationDetails, setQuotationEdit } from "../redux/helperSlice";
 
 const step = [
   { id: "01", name: "General Details", status: "current" },
@@ -23,6 +24,7 @@ const NewQuotation = () => {
   const [loading, setLoading] = useState(false);
   const { quotationDetails } = useSelector((store) => store.helper);
   const [createQuotation, { isLoading }] = useCreateQuotationMutation();
+  const dispatch = useDispatch();
 
   const handleNext = (name) => {
     setSteps(
@@ -65,7 +67,10 @@ const NewQuotation = () => {
     }
   };
 
-  const editShipToDetails = () => {};
+  const editShipToDetails = (item, index) => {
+    handleBack("Ship To Details");
+    dispatch(setQuotationEdit({ data: item, id: index }));
+  };
 
   if (loading || isLoading) return <Loading />;
 
@@ -208,7 +213,10 @@ const NewQuotation = () => {
                     Primary Contact:{" "}
                     {`${item.contact[0].name} / ${item.contact[0].number} / ${item.contact[0].email}`}
                   </h5>
-                  <Button label="Edit" />
+                  <Button
+                    label="Edit"
+                    handleClick={() => editShipToDetails(item, index)}
+                  />
                 </div>
                 <div className="overflow-y-auto">
                   <table className="min-w-full border text-center text-sm font-light dark:border-neutral-500">

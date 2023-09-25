@@ -9,7 +9,10 @@ const initialState = {
     billToDetails: {},
     shipDetails: null,
     shipToDetails: [],
-    edit: false,
+  },
+  quotationEdit: {
+    status: false,
+    id: null,
   },
 };
 
@@ -27,14 +30,24 @@ const helperSlice = createSlice({
     },
 
     setQuotationDetails: (state, action) => {
-      const { name, data } = action.payload;
-      if (name === "shipDetails" || name === "Add Ship To") {
-        state.quotationDetails.shipToDetails.push(data);
+      const { name, data, id } = action.payload;
+      if (name === "shipDetails") {
+        if (id >= 0) {
+          state.quotationDetails.shipToDetails[id] = data;
+        } else state.quotationDetails.shipToDetails.push(data);
       }
       state.quotationDetails[name] = data;
     },
-    editQuotationDetails: (state, action) => {
-      state.quotationDetails.edit = !state.quotationDetails.edit;
+    setQuotationEdit: (state, action) => {
+      const { data, id } = action.payload;
+      state.quotationEdit.status = true;
+      state.quotationEdit.id = id;
+      state.quotationDetails.shipDetails = data;
+    },
+    clearQuotationEdit: (state, action) => {
+      state.quotationEdit.status = false;
+      state.quotationEdit.id = null;
+      state.quotationDetails.shipDetails = null;
     },
   },
 });
@@ -43,7 +56,8 @@ export const {
   setCredentials,
   removeCredentials,
   setQuotationDetails,
-  editQuotationDetails,
+  setQuotationEdit,
+  clearQuotationEdit,
 } = helperSlice.actions;
 
 export default helperSlice.reducer;

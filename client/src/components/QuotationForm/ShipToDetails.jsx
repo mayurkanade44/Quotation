@@ -7,13 +7,18 @@ import {
   serviceFrequency,
 } from "../../utils/constData";
 import { useDispatch, useSelector } from "react-redux";
-import { setQuotationDetails } from "../../redux/helperSlice";
+import {
+  clearQuotationEdit,
+  setQuotationDetails,
+} from "../../redux/helperSlice";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
 const ShipToDetails = ({ handleNext, handleBack }) => {
   const dispatch = useDispatch();
-  const { quotationDetails } = useSelector((store) => store.helper);
+  const { quotationDetails, quotationEdit } = useSelector(
+    (store) => store.helper
+  );
   const [newShip, setNewShip] = useState("");
 
   const {
@@ -69,12 +74,23 @@ const ShipToDetails = ({ handleNext, handleBack }) => {
   };
 
   const submit = (data) => {
-    dispatch(setQuotationDetails({ name: "shipDetails", data }));
-    console.log(newShip);
     if (newShip === "Add New") {
+      dispatch(setQuotationDetails({ name: "shipDetails", data }));
       reset();
       toast.success("New Ship To Details Added");
     } else {
+      if (quotationEdit.status) {
+        dispatch(
+          setQuotationDetails({
+            name: "shipDetails",
+            data,
+            id: quotationEdit.id,
+          })
+        );
+        dispatch(clearQuotationEdit());
+      } else {
+        dispatch(setQuotationDetails({ name: "shipDetails", data }));
+      }
       handleNext();
     }
     setNewShip("");
@@ -404,18 +420,24 @@ const ShipToDetails = ({ handleNext, handleBack }) => {
 
       <hr className="h-px my-3 mb-2 border-0 dark:bg-gray-700" />
       <div className="flex justify-center">
-        <Button
-          type="submit"
-          label="Add New Ship To Details"
-          handleClick={(e) => setNewShip("Add New")}
-        />
+        {!quotationEdit.status && (
+          <Button
+            type="submit"
+            label="Add New Ship To Details"
+            handleClick={(e) => setNewShip("Add New")}
+          />
+        )}
         <Button
           type="submit"
           label="Submit"
           color="bg-green-600"
           handleClick={(e) => setNewShip("Submit")}
         />
-        <Button label="Back" color="bg-gray-700" />
+        <Button
+          label="Back"
+          color="bg-gray-700"
+          handleClick={() => handleBack("Bill To Details")}
+        />
       </div>
     </form>
   );
