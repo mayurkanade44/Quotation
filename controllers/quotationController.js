@@ -87,3 +87,24 @@ export const getQuotation = async (req, res) => {
     res.status(500).json({ msg: "Server error, try again later" });
   }
 };
+
+export const editQuotation = async (req, res) => {
+  const { id } = req.params;
+  console.log(id);
+  try {
+    const quotation = await Quotation.findById(id);
+    if (!quotation) return res.status(404).json({ msg: "Quotation not found" });
+
+    console.log(req.body);
+
+    await Quotation.findByIdAndUpdate(id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    return res.status(200).json({ msg: "Quotation updated" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "Server error, try again later" });
+  }
+};

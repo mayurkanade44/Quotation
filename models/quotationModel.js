@@ -26,7 +26,7 @@ const quotationSchema = new mongoose.Schema(
     number: { type: String, required: true },
     salesName: { type: Object, required: true },
     referenceName: { type: String, required: true },
-    otherReference: [String],
+    otherReference: { type: String },
     business: { type: Object, required: true },
     billToDetails: {
       prefix: { type: Object, required: true },
