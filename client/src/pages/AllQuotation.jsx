@@ -1,6 +1,7 @@
 import { Button } from "../components";
 import { useAllQuotationQuery } from "../redux/quotationSlice";
 import { Link } from "react-router-dom";
+import { dateFormat } from "../utils/functionHelper";
 
 const AllQuotation = () => {
   const { data: allQuotation, isLoading } = useAllQuotationQuery({
@@ -31,26 +32,26 @@ const AllQuotation = () => {
             </tr>
           </thead>
           <tbody className="w-full">
-            {allQuotation?.map((contract) => (
+            {allQuotation?.map((quotation) => (
               <tr
-                key={contract._id}
+                key={quotation._id}
                 className="h-12 text-sm leading-none text-gray-700 border-b dark:border-neutral-500 bg-white hover:bg-gray-100"
               >
                 <td className="px-3 border-r font-normal dark:border-neutral-500">
-                  {contract.number}
+                  {quotation.number}
                 </td>
                 <td className="px-3 border-r font-normal text-center dark:border-neutral-500">
-                  {contract.createdAt}
+                  {dateFormat(quotation.createdAt)}
                 </td>
                 <td className="px-3 border-r font-normal dark:border-neutral-500">
-                  {contract.billToDetails.name}
+                  {quotation.billToDetails.name}
                 </td>
                 <td className="px-3 border-r font-normal dark:border-neutral-500">
-                  {contract.salesName.label}
+                  {quotation.salesName.label}
                 </td>
 
                 <td className="px-3 border-r font-normal text-center dark:border-neutral-500">
-                  <Link to={`/contract-details/${contract._id}`}>
+                  <Link to={`/quotation-details/${quotation._id}`}>
                     <Button label="Details" height="py-2" width="w-20" />
                   </Link>
                 </td>

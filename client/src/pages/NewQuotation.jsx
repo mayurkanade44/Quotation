@@ -69,7 +69,7 @@ const NewQuotation = () => {
 
   const editShipToDetails = (item, index) => {
     handleBack("Ship To Details");
-    dispatch(setQuotationEdit({ data: item, id: index }));
+    dispatch(setQuotationEdit({ data: item, id: index, name: "shipDetails" }));
   };
 
   if (loading || isLoading) return <Loading />;

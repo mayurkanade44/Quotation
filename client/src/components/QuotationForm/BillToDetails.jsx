@@ -2,11 +2,22 @@ import { Button, InputRow, InputSelect, Loading } from "..";
 import { useForm, Controller } from "react-hook-form";
 import { prefix } from "../../utils/constData";
 import { useDispatch, useSelector } from "react-redux";
-import { setQuotationDetails } from "../../redux/helperSlice";
+import {
+  clearQuotationEdit,
+  setQuotationDetails,
+} from "../../redux/helperSlice";
+import { useEditQuotationMutation } from "../../redux/quotationSlice";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const BillToDetails = ({ handleNext, handleBack }) => {
   const dispatch = useDispatch();
-  const { quotationDetails } = useSelector((store) => store.helper);
+  const navigate = useNavigate()
+  const { quotationDetails, quotationEdit } = useSelector(
+    (store) => store.helper
+  );
+
+  const [editQuotation, { isLoading }] = useEditQuotationMutation();
 
   const {
     register,
@@ -34,9 +45,19 @@ const BillToDetails = ({ handleNext, handleBack }) => {
     },
   });
 
-  const submit = (data) => {
-    dispatch(setQuotationDetails({ name: "billToDetails", data }));
-    handleNext();
+  const submit = async (data) => {
+    if (quotationEdit.status) {
+      const res = await editQuotation({
+        data: { billToDetails: data },
+        id: quotationEdit.id,
+      }).unwrap();
+      navigate(`/quotation-details/${quotationEdit.id}`);
+      toast.success(res.msg);
+      dispatch(clearQuotationEdit());
+    } else {
+      dispatch(setQuotationDetails({ name: "billToDetails", data }));
+      handleNext();
+    }
   };
 
   return (
@@ -247,8 +268,10 @@ const BillToDetails = ({ handleNext, handleBack }) => {
           </div>
         </div>
       </div>
-      <Button label="Back" color="bg-gray-700" handleClick={handleBack} />
-      <Button label="Next" type="submit" />
+      {!quotationEdit.status && (
+        <Button label="Back" color="bg-gray-700" handleClick={handleBack} />
+      )}
+      <Button label={quotationEdit.status ? "Save" : "Next"} type="submit" />
     </form>
   );
 };
