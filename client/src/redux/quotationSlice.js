@@ -24,6 +24,14 @@ export const quotationSlice = apiSlice.injectEndpoints({
       providesTags: ["Quotation"],
       keepUnusedDataFor: 10,
     }),
+    editQuotation: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/api/quotation/details/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["Quotation"],
+    }),
   }),
 });
 
@@ -31,4 +39,5 @@ export const {
   useCreateQuotationMutation,
   useAllQuotationQuery,
   useSingleQuotationQuery,
+  useEditQuotationMutation,
 } = quotationSlice;

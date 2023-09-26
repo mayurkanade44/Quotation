@@ -13,6 +13,7 @@ const initialState = {
   quotationEdit: {
     status: false,
     id: null,
+    name: "",
   },
 };
 
@@ -28,7 +29,6 @@ const helperSlice = createSlice({
       state.user = null;
       localStorage.clear();
     },
-
     setQuotationDetails: (state, action) => {
       const { name, data, id } = action.payload;
       if (name === "shipDetails") {
@@ -39,15 +39,27 @@ const helperSlice = createSlice({
       state.quotationDetails[name] = data;
     },
     setQuotationEdit: (state, action) => {
-      const { data, id } = action.payload;
+      const { data, id, name } = action.payload;
       state.quotationEdit.status = true;
       state.quotationEdit.id = id;
-      state.quotationDetails.shipDetails = data;
+      state.quotationEdit.name = name;
+      state.quotationDetails[name] = data;
     },
     clearQuotationEdit: (state, action) => {
       state.quotationEdit.status = false;
       state.quotationEdit.id = null;
-      state.quotationDetails.shipDetails = null;
+      state.quotationDetails = {
+        generalDetails: {},
+        billToDetails: {},
+        shipDetails: null,
+        shipToDetails: [],
+      };
+    },
+    setFetchQuotationDetails: (state, action) => {
+      const { generalDetails, billToDetails, shipToDetails } = action.payload;
+      state.quotationDetails.billToDetails = billToDetails;
+      state.quotationDetails.generalDetails = generalDetails;
+      state.quotationDetails.shipToDetails = shipToDetails;
     },
   },
 });
@@ -58,6 +70,7 @@ export const {
   setQuotationDetails,
   setQuotationEdit,
   clearQuotationEdit,
+  setFetchQuotationDetails,
 } = helperSlice.actions;
 
 export default helperSlice.reducer;

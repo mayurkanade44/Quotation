@@ -2,11 +2,22 @@ import { Button, InputRow, InputSelect, Loading } from "..";
 import { useForm, Controller } from "react-hook-form";
 import { business, sales } from "../../utils/constData";
 import { useDispatch, useSelector } from "react-redux";
-import { setQuotationDetails } from "../../redux/helperSlice";
+import {
+  clearQuotationEdit,
+  setQuotationDetails,
+} from "../../redux/helperSlice";
+import { useEditQuotationMutation } from "../../redux/quotationSlice";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const GeneralDetails = ({ handleNext }) => {
   const dispatch = useDispatch();
-  const { quotationDetails } = useSelector((store) => store.helper);
+  const navigate = useNavigate();
+  const { quotationDetails, quotationEdit } = useSelector(
+    (store) => store.helper
+  );
+
+  const [editQuotation, { isLoading }] = useEditQuotationMutation();
 
   const {
     register,
@@ -26,9 +37,16 @@ const GeneralDetails = ({ handleNext }) => {
     },
   });
 
-  const submit = (data) => {
-    dispatch(setQuotationDetails({ name: "generalDetails", data }));
-    handleNext();
+  const submit = async (data) => {
+    if (quotationEdit.status) {
+      const res = await editQuotation({ data, id: quotationEdit.id }).unwrap();
+      navigate(`/quotation-details/${quotationEdit.id}`);
+      toast.success(res.msg);
+      dispatch(clearQuotationEdit());
+    } else {
+      dispatch(setQuotationDetails({ name: "generalDetails", data }));
+      handleNext();
+    }
   };
 
   return (
@@ -38,7 +56,7 @@ const GeneralDetails = ({ handleNext }) => {
     >
       <div className="w-full md:w-2/4 lg:w-1/4">
         <h1 className="text-center mt-2 mb-4 text-2xl font-medium text-green-600">
-          New Quotation
+          {quotationEdit.status ? "Update Quotation" : "New Quotation"}
         </h1>
         <Controller
           name="salesName"
@@ -101,7 +119,10 @@ const GeneralDetails = ({ handleNext }) => {
           {errors.payment && "Payments terms is required"}
         </p>
         <div className="mt-2 w-32">
-          <Button label="Next" type="submit" />
+          <Button
+            label={quotationEdit.status ? "Save" : "Next"}
+            type="submit"
+          />
         </div>
       </div>
     </form>
