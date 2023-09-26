@@ -74,3 +74,16 @@ export const getAllQuotation = async (req, res) => {
     res.status(500).json({ msg: "Server error, try again later" });
   }
 };
+
+export const getQuotation = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const quotation = await Quotation.findById(id);
+    if (!quotation) return res.status(404).json({ msg: "Quotation not found" });
+
+    return res.json(quotation);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "Server error, try again later" });
+  }
+};

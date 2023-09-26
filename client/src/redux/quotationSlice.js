@@ -14,9 +14,21 @@ export const quotationSlice = apiSlice.injectEndpoints({
         url: "/api/quotation",
         params: { search },
       }),
+      providesTags: ["Quotation"],
+      keepUnusedDataFor: 10,
+    }),
+    singleQuotation: builder.query({
+      query: (id) => ({
+        url: `/api/quotation/details/${id}`,
+      }),
+      providesTags: ["Quotation"],
+      keepUnusedDataFor: 10,
     }),
   }),
 });
 
-export const { useCreateQuotationMutation, useAllQuotationQuery } =
-  quotationSlice;
+export const {
+  useCreateQuotationMutation,
+  useAllQuotationQuery,
+  useSingleQuotationQuery,
+} = quotationSlice;

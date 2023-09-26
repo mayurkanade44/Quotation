@@ -8,7 +8,7 @@ import {
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { AllQuotation, NewQuotation } from "./pages";
+import { AllQuotation, NewQuotation, SingleQuotation } from "./pages";
 
 function App() {
   const Layout = () => {
@@ -24,6 +24,7 @@ function App() {
       <Route path="/" element={<Layout />}>
         <Route path="/quotations" element={<AllQuotation />} />
         <Route path="/new-quotation" element={<NewQuotation />} />
+        <Route path="/quotation-details/:id" element={<SingleQuotation />} />
       </Route>
     )
   );

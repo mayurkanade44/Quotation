@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 .loading {
   position: fixed;
   inset: 0;
@@ -16,11 +15,5 @@
 }
 
 .container {
-  margin: 20px 40px ;
-}
-
-@media (max-width: 767px) {
-  .container {
-    margin: 5px 20px;
-  }
+  margin: 20px 40px;
 }
