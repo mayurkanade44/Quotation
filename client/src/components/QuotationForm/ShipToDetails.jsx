@@ -81,7 +81,11 @@ const ShipToDetails = ({ handleNext, handleBack }) => {
   const submit = async (data) => {
     if (quotationId) {
       const shipToDetails = [...quotationDetails.shipToDetails];
-      shipToDetails[quotationEdit.id] = data;
+      if (quotationId == quotationEdit.id) {
+        shipToDetails.push(data);
+      } else {
+        shipToDetails[quotationEdit.id] = data;
+      }
       const res = await editQuotation({
         data: { shipToDetails },
         id: quotationId,
@@ -450,11 +454,13 @@ const ShipToDetails = ({ handleNext, handleBack }) => {
           color="bg-green-600"
           handleClick={(e) => setNewShip("Submit")}
         />
-        <Button
-          label="Back"
-          color="bg-gray-700"
-          handleClick={() => handleBack("Bill To Details")}
-        />
+        {!quotationId && (
+          <Button
+            label="Back"
+            color="bg-gray-700"
+            handleClick={() => handleBack("Bill To Details")}
+          />
+        )}
       </div>
     </form>
   );

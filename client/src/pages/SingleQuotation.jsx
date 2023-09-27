@@ -16,18 +16,20 @@ const SingleQuotation = () => {
   } = useSingleQuotationQuery(quotationId);
 
   const handleEditQuotation = ({ name, id, data }) => {
-    const generalDetails = {
-      number: quotation.number,
-      salesName: quotation.salesName,
-      referenceName: quotation.referenceName,
-      otherReference: quotation.otherReference,
-      business: quotation.business,
-      payment: quotation.payment,
-    };
-
     if (name === "generalDetails") {
       dispatch(
-        setQuotationEdit({ name, id: quotationId, data: generalDetails })
+        setQuotationEdit({
+          name,
+          id: quotationId,
+          data: {
+            number: quotation.number,
+            salesName: quotation.salesName,
+            referenceName: quotation.referenceName,
+            otherReference: quotation.otherReference,
+            business: quotation.business,
+            payment: quotation.payment,
+          },
+        })
       );
     } else if (name === "billToDetails") {
       dispatch(
@@ -45,9 +47,28 @@ const SingleQuotation = () => {
           data: quotation.shipToDetails,
         })
       );
+    } else if (name === "Add New Ship To") {
+      dispatch(setQuotationEdit({ name: "shipDetails", id: quotationId }));
+      dispatch(
+        setQuotationDetails({
+          name: "shipToDetails",
+          data: quotation.shipToDetails,
+        })
+      );
     }
 
     navigate(`/edit-quotation/${quotationId}`);
+  };
+
+  const handleDeleteShipTo = ({ id }) => {
+    dispatch(
+      setQuotationDetails({
+        name: "shipToDetails",
+        data: quotation.shipToDetails,
+      })
+    );
+    let shipToDetails = [...quotation.shipToDetails];
+    const temp = shipToDetails.filter((item) => item._id !== id);
   };
 
   return (
@@ -131,9 +152,19 @@ const SingleQuotation = () => {
               <hr className="h-px my-2 border-0 dark:bg-gray-700" />
             </div>
             <div className="col-span-12">
-              <h1 className="text-center text-blue-600 text-2xl font-semibold mb-4">
-                Ship To Details
-              </h1>
+              <div className="lg:flex justify-center gap-x-5">
+                <h2 className=" text-blue-600 text-2xl font-semibold pt-2">
+                  Ship To Details
+                </h2>
+                <Button
+                  label="Add New Ship To"
+                  handleClick={() =>
+                    handleEditQuotation({ name: "Add New Ship To" })
+                  }
+                />
+              </div>
+            </div>
+            <div className="col-span-12 mt-2">
               {quotation.shipToDetails?.map((item, index) => (
                 <div className="mb-8" key={item._id}>
                   <div className="lg:flex items-center gap-x-6 my-2">
@@ -163,6 +194,11 @@ const SingleQuotation = () => {
                           data: item,
                         })
                       }
+                    />
+                    <Button
+                      label="Delete"
+                      color="bg-red-600"
+                      handleClick={() => handleDeleteShipTo({ id: item._id })}
                     />
                   </div>
                   <div className="overflow-y-auto">
