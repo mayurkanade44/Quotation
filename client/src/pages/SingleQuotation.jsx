@@ -1,11 +1,18 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useSingleQuotationQuery } from "../redux/quotationSlice";
+import {
+  useEditQuotationMutation,
+  useSingleQuotationQuery,
+} from "../redux/quotationSlice";
 import { AlertMessage, Button, Loading } from "../components";
 import { useDispatch, useSelector } from "react-redux";
 import { setQuotationDetails, setQuotationEdit } from "../redux/helperSlice";
+import { useState } from "react";
+import DeleteModal from "../components/Modals/DeleteModal";
+import { toast } from "react-toastify";
 
 const SingleQuotation = () => {
   const { id: quotationId } = useParams();
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -14,6 +21,8 @@ const SingleQuotation = () => {
     isLoading: quotationLoading,
     error,
   } = useSingleQuotationQuery(quotationId);
+
+  const [editQuotation, { isLoading }] = useEditQuotationMutation();
 
   const handleEditQuotation = ({ name, id, data }) => {
     if (name === "generalDetails") {
@@ -60,15 +69,29 @@ const SingleQuotation = () => {
     navigate(`/edit-quotation/${quotationId}`);
   };
 
-  const handleDeleteShipTo = ({ id }) => {
+  const openDeleteModal = () => {
     dispatch(
       setQuotationDetails({
         name: "shipToDetails",
         data: quotation.shipToDetails,
       })
     );
+    setOpen(true);
+  };
+
+  const handleDelete = async (id) => {
     let shipToDetails = [...quotation.shipToDetails];
     const temp = shipToDetails.filter((item) => item._id !== id);
+    try {
+      await editQuotation({
+        data: { shipToDetails: temp },
+        id: quotationId,
+      }).unwrap();
+      toast.success("Ship to details deleted");
+      setOpen(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -198,7 +221,13 @@ const SingleQuotation = () => {
                     <Button
                       label="Delete"
                       color="bg-red-600"
-                      handleClick={() => handleDeleteShipTo({ id: item._id })}
+                      handleClick={openDeleteModal}
+                    />
+                    <DeleteModal
+                      open={open}
+                      close={() => setOpen(false)}
+                      description="Are you sure you want delete this shipping to details?"
+                      handleClick={() => handleDelete(item._id)}
                     />
                   </div>
                   <div className="overflow-y-auto">
