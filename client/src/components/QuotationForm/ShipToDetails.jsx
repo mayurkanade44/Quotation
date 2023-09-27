@@ -13,13 +13,18 @@ import {
 } from "../../redux/helperSlice";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEditQuotationMutation } from "../../redux/quotationSlice";
 
 const ShipToDetails = ({ handleNext, handleBack }) => {
+  const { id: quotationId } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { quotationDetails, quotationEdit } = useSelector(
     (store) => store.helper
   );
   const [newShip, setNewShip] = useState("");
+  const [editQuotation, { isLoading }] = useEditQuotationMutation();
 
   const {
     register,
@@ -73,7 +78,20 @@ const ShipToDetails = ({ handleNext, handleBack }) => {
     setValue("contact", quotationDetails.billToDetails.contact);
   };
 
-  const submit = (data) => {
+  const submit = async (data) => {
+    if (quotationId) {
+      const shipToDetails = [...quotationDetails.shipToDetails];
+      shipToDetails[quotationEdit.id] = data;
+      const res = await editQuotation({
+        data: { shipToDetails },
+        id: quotationId,
+      }).unwrap();
+      navigate(`/quotation-details/${quotationId}`);
+      toast.success(res.msg);
+      dispatch(clearQuotationEdit());
+      return;
+    }
+
     if (newShip === "Add New") {
       dispatch(setQuotationDetails({ name: "shipDetails", data }));
       reset();
@@ -87,7 +105,6 @@ const ShipToDetails = ({ handleNext, handleBack }) => {
             id: quotationEdit.id,
           })
         );
-        dispatch(clearQuotationEdit());
       } else {
         dispatch(setQuotationDetails({ name: "shipDetails", data }));
       }

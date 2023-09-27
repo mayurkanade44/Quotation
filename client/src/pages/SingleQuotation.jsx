@@ -2,10 +2,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useSingleQuotationQuery } from "../redux/quotationSlice";
 import { AlertMessage, Button, Loading } from "../components";
 import { useDispatch, useSelector } from "react-redux";
-import { setQuotationEdit } from "../redux/helperSlice";
+import { setQuotationDetails, setQuotationEdit } from "../redux/helperSlice";
 
 const SingleQuotation = () => {
-  const { id } = useParams();
+  const { id: quotationId } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -13,7 +13,7 @@ const SingleQuotation = () => {
     data: quotation,
     isLoading: quotationLoading,
     error,
-  } = useSingleQuotationQuery(id);
+  } = useSingleQuotationQuery(quotationId);
 
   const handleEditQuotation = ({ name, id, data }) => {
     const generalDetails = {
@@ -24,16 +24,30 @@ const SingleQuotation = () => {
       business: quotation.business,
       payment: quotation.payment,
     };
-    const billToDetails = quotation.billToDetails;
-    const shipToDetails = quotation.shipToDetails;
 
     if (name === "generalDetails") {
-      dispatch(setQuotationEdit({ name, id, data: generalDetails }));
+      dispatch(
+        setQuotationEdit({ name, id: quotationId, data: generalDetails })
+      );
     } else if (name === "billToDetails") {
-      dispatch(setQuotationEdit({ name, id, data: quotation.billToDetails }));
+      dispatch(
+        setQuotationEdit({
+          name,
+          id: quotationId,
+          data: quotation.billToDetails,
+        })
+      );
+    } else if (name === "shipDetails") {
+      dispatch(setQuotationEdit({ name, id, data }));
+      dispatch(
+        setQuotationDetails({
+          name: "shipToDetails",
+          data: quotation.shipToDetails,
+        })
+      );
     }
 
-    navigate(`/edit-quotation/${id}`);
+    navigate(`/edit-quotation/${quotationId}`);
   };
 
   return (
@@ -74,7 +88,7 @@ const SingleQuotation = () => {
                   label="Edit"
                   color="bg-gray-600"
                   handleClick={() =>
-                    handleEditQuotation({ name: "generalDetails", id })
+                    handleEditQuotation({ name: "generalDetails" })
                   }
                 />
               </div>
@@ -108,7 +122,7 @@ const SingleQuotation = () => {
                   label="Edit"
                   color="bg-gray-600"
                   handleClick={() =>
-                    handleEditQuotation({ name: "billToDetails", id })
+                    handleEditQuotation({ name: "billToDetails" })
                   }
                 />
               </div>
@@ -121,8 +135,8 @@ const SingleQuotation = () => {
                 Ship To Details
               </h1>
               {quotation.shipToDetails?.map((item, index) => (
-                <div className="mb-8" key={index}>
-                  <div className="lg:flex gap-x-6 my-2">
+                <div className="mb-8" key={item._id}>
+                  <div className="lg:flex items-center gap-x-6 my-2">
                     <h2 className="text-lg">
                       <span className="font-semibold">
                         {index + 1}: Client Name:
@@ -130,15 +144,26 @@ const SingleQuotation = () => {
                       {item.prefix.label} {item.name}
                     </h2>
                     <h2 className="text-lg">
-                      <span className="font-semibold">Billing Address:</span>{" "}
+                      <span className="font-semibold">Shipping Address:</span>{" "}
                       {item.address} {item.road} {item.location} {item.landmark}{" "}
                       {item.city} - {item.pincode}
                     </h2>
                     <h2 className="text-lg">
-                      <span className="font-semibold">Billing Contact:</span>{" "}
+                      <span className="font-semibold">Shipping Contact:</span>{" "}
                       {item.contact[0].name} / {item.contact[0].number} /{" "}
                       {item.contact[0].email}
                     </h2>
+                    <Button
+                      label="Edit"
+                      color="bg-gray-600"
+                      handleClick={() =>
+                        handleEditQuotation({
+                          name: "shipDetails",
+                          id: index,
+                          data: item,
+                        })
+                      }
+                    />
                   </div>
                   <div className="overflow-y-auto">
                     <table className="min-w-full border text-center text-sm font-light dark:border-neutral-500">

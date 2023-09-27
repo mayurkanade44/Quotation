@@ -1,5 +1,9 @@
 import { useSelector } from "react-redux";
-import { BillToDetails, GeneralDetails } from "../components/QuotationForm";
+import {
+  BillToDetails,
+  GeneralDetails,
+  ShipToDetails,
+} from "../components/QuotationForm";
 
 const EditQuotation = () => {
   const { quotationEdit } = useSelector((store) => store.helper);
@@ -9,6 +13,8 @@ const EditQuotation = () => {
         <GeneralDetails />
       ) : quotationEdit.name === "billToDetails" ? (
         <BillToDetails />
+      ) : quotationEdit.name === "shipDetails" ? (
+        <ShipToDetails />
       ) : null}
     </div>
   );
