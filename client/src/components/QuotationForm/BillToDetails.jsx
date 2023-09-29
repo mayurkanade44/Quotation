@@ -7,12 +7,13 @@ import {
   setQuotationDetails,
 } from "../../redux/helperSlice";
 import { useEditQuotationMutation } from "../../redux/quotationSlice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const BillToDetails = ({ handleNext, handleBack }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const { id: quotationId } = useParams();
   const { quotationDetails, quotationEdit } = useSelector(
     (store) => store.helper
   );
@@ -46,7 +47,7 @@ const BillToDetails = ({ handleNext, handleBack }) => {
   });
 
   const submit = async (data) => {
-    if (quotationEdit.status) {
+    if (quotationId) {
       const res = await editQuotation({
         data: { billToDetails: data },
         id: quotationEdit.id,
@@ -268,8 +269,8 @@ const BillToDetails = ({ handleNext, handleBack }) => {
           </div>
         </div>
       </div>
-      {!quotationEdit.status && (
-        <Button label="Back" color="bg-gray-700" handleClick={handleBack} />
+      {!quotationId && (
+        <Button label="Back" color="bg-gray-700" onClick={handleBack} />
       )}
       <Button label={quotationEdit.status ? "Save" : "Next"} type="submit" />
     </form>
