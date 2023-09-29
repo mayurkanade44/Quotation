@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import {
   useEditQuotationMutation,
+  useReviseQuotationMutation,
   useSingleQuotationQuery,
 } from "../redux/quotationSlice";
 import { AlertMessage, Button, Loading } from "../components";
@@ -9,6 +10,7 @@ import { setQuotationDetails, setQuotationEdit } from "../redux/helperSlice";
 import { useState } from "react";
 import DeleteModal from "../components/Modals/DeleteModal";
 import { toast } from "react-toastify";
+import { saveAs } from "file-saver";
 
 const SingleQuotation = () => {
   const { id: quotationId } = useParams();
@@ -22,7 +24,10 @@ const SingleQuotation = () => {
     error,
   } = useSingleQuotationQuery(quotationId);
 
-  const [editQuotation, { isLoading }] = useEditQuotationMutation();
+  const [editQuotation, { isLoading: deleteLoading }] =
+    useEditQuotationMutation();
+  const [reviseQuotation, { isLoading: reviseLoading }] =
+    useReviseQuotationMutation();
 
   const handleEditQuotation = ({ name, id, data }) => {
     if (name === "generalDetails") {
@@ -91,12 +96,26 @@ const SingleQuotation = () => {
       setOpen(false);
     } catch (error) {
       console.log(error);
+      toast.error(error?.data?.msg || error.error);
+    }
+  };
+
+  const handleDownload = ({ link }) => {};
+
+  const createReviseQuotation = async () => {
+    try {
+      const res = await reviseQuotation({ id: quotationId }).unwrap();
+      toast.success(res.msg);
+      saveAs(res.link, `${res.clientName}.docx`);
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.data?.msg || error.error);
     }
   };
 
   return (
     <div className="mx-10 my-5">
-      {quotationLoading ? (
+      {quotationLoading || reviseLoading || deleteLoading ? (
         <Loading />
       ) : (
         error && <AlertMessage>{error?.data?.msg || error.error}</AlertMessage>
@@ -104,13 +123,28 @@ const SingleQuotation = () => {
       {quotation && (
         <>
           <div className="lg:grid lg:grid-cols-12 gap-x-4">
-            <div className="col-span-4">
+            <div className="col-span-6">
               <h1 className="text-[25px] font-bold text-center">
                 Quotation Number: {quotation.number}
               </h1>
             </div>
-            <Button label="Download" color="bg-green-600" />
-            <Button label="Delete" color="bg-red-600" />
+            <div className="col-span-2">
+              <a href={quotation.wordDoc}>
+                <Button label="Download" color="bg-green-600" />
+              </a>
+            </div>
+            <div className="col-span-2">
+              <Button
+                label="Revise Quotation"
+                onClick={createReviseQuotation}
+              />
+            </div>
+            <div className="col-span-1">
+              <Button label="Delete" color="bg-red-600" />
+            </div>
+            <div className="col-span-1">
+              <Button label="Send Email" color="bg-lime-600" />
+            </div>
             <div className="col-span-12">
               <hr className="h-px my-2 border-0 dark:bg-gray-700" />
             </div>
@@ -131,7 +165,7 @@ const SingleQuotation = () => {
                 <Button
                   label="Edit"
                   color="bg-gray-600"
-                  handleClick={() =>
+                  onClick={() =>
                     handleEditQuotation({ name: "generalDetails" })
                   }
                 />
@@ -165,9 +199,7 @@ const SingleQuotation = () => {
                 <Button
                   label="Edit"
                   color="bg-gray-600"
-                  handleClick={() =>
-                    handleEditQuotation({ name: "billToDetails" })
-                  }
+                  onClick={() => handleEditQuotation({ name: "billToDetails" })}
                 />
               </div>
             </div>
@@ -181,7 +213,7 @@ const SingleQuotation = () => {
                 </h2>
                 <Button
                   label="Add New Ship To"
-                  handleClick={() =>
+                  onClick={() =>
                     handleEditQuotation({ name: "Add New Ship To" })
                   }
                 />
@@ -210,7 +242,7 @@ const SingleQuotation = () => {
                     <Button
                       label="Edit"
                       color="bg-gray-600"
-                      handleClick={() =>
+                      onClick={() =>
                         handleEditQuotation({
                           name: "shipDetails",
                           id: index,
@@ -221,14 +253,16 @@ const SingleQuotation = () => {
                     <Button
                       label="Delete"
                       color="bg-red-600"
-                      handleClick={openDeleteModal}
+                      onClick={openDeleteModal}
                     />
-                    <DeleteModal
-                      open={open}
-                      close={() => setOpen(false)}
-                      description="Are you sure you want delete this shipping to details?"
-                      handleClick={() => handleDelete(item._id)}
-                    />
+                    {open && (
+                      <DeleteModal
+                        open={open}
+                        close={() => setOpen(false)}
+                        description="Are you sure you want delete this shipping to details?"
+                        onClick={() => handleDelete(item._id)}
+                      />
+                    )}
                   </div>
                   <div className="overflow-y-auto">
                     <table className="min-w-full border text-center text-sm font-light dark:border-neutral-500">

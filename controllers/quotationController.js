@@ -9,7 +9,6 @@ export const createQuotation = async (req, res) => {
     req.body.number = "EPPL/QTN/444";
     const quotation = req.body;
 
-    const clientName = `${quotation.billToDetails.prefix.label}. ${quotation.billToDetails.name}`;
     const template = fs.readFileSync("./tmp/quotation.docx");
 
     const buffer = await createReport({
@@ -22,7 +21,7 @@ export const createQuotation = async (req, res) => {
         business: quotation.business,
         sales: quotation.salesName,
         referenceName: quotation.referenceName,
-        name: clientName,
+        name: `${quotation.billToDetails.prefix.label}. ${quotation.billToDetails.name}`,
         address: quotation.billToDetails.address,
         road: quotation.billToDetails.road,
         location: quotation.billToDetails.location,
@@ -33,6 +32,7 @@ export const createQuotation = async (req, res) => {
       },
     });
 
+    const clientName = `${quotation.shipToDetails[0].name} ${quotation.number}`;
     const fileName = clientName.replace(/\//g, "-");
     const filePath = `./tmp/${fileName}.docx`;
 
@@ -45,7 +45,59 @@ export const createQuotation = async (req, res) => {
       return res.status(201).json({
         msg: `${newQuotation.number} created`,
         link,
-        fileName: `${newQuotation.shipToDetails[0].name} ${newQuotation.number}`,
+        clientName,
+      });
+    }
+    res.status(400).json({ msg: "Quotation not created, try again later" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "Server error, try again later" });
+  }
+};
+
+export const revisedQuotation = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const quotation = await Quotation.findById(id);
+    if (!quotation) return res.status(404).json({ msg: "Quotation not found" });
+
+    const template = fs.readFileSync("./tmp/quotation.docx");
+
+    const buffer = await createReport({
+      cmdDelimiter: ["{", "}"],
+      template,
+
+      additionalJsContext: {
+        quotationNo: quotation.number,
+        date: moment().format("DD/MM/YYYY"),
+        business: quotation.business,
+        sales: quotation.salesName,
+        referenceName: quotation.referenceName,
+        name: `${quotation.billToDetails.prefix.label}. ${quotation.billToDetails.name}`,
+        address: quotation.billToDetails.address,
+        road: quotation.billToDetails.road,
+        location: quotation.billToDetails.location,
+        nearBy: quotation.billToDetails.landmark,
+        city: `${quotation.billToDetails.city}-${quotation.billToDetails.pincode}`,
+        payment: quotation.payment,
+        shipToDetails: quotation.shipToDetails,
+      },
+    });
+
+    const clientName = `${quotation.shipToDetails[0].name} ${quotation.number}`;
+    const fileName = clientName.replace(/\//g, "-");
+    const filePath = `./tmp/${fileName}.docx`;
+
+    fs.writeFileSync(filePath, buffer);
+
+    const link = await uploadFile({ filePath, folder: "Eppl/Quotation" });
+    if (link) {
+      quotation.wordDoc = link;
+      await quotation.save();
+      return res.status(201).json({
+        msg: `${quotation.number} revised`,
+        link,
+        clientName,
       });
     }
     res.status(400).json({ msg: "Quotation not created, try again later" });

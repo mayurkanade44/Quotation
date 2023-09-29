@@ -126,7 +126,7 @@ const ShipToDetails = ({ handleNext, handleBack }) => {
               Shipping Information
             </h2>
             <Button
-              handleClick={copyBillDetails}
+              onClick={copyBillDetails}
               label="Same as billing"
               small
               color="bg-gray-700"
@@ -415,7 +415,7 @@ const ShipToDetails = ({ handleNext, handleBack }) => {
                   <Button
                     label="Add"
                     color="bg-black"
-                    handleClick={() =>
+                    onClick={() =>
                       append({
                         treatmentLocation: "",
                         cost: "",
@@ -429,7 +429,7 @@ const ShipToDetails = ({ handleNext, handleBack }) => {
                     <Button
                       color="bg-red-600"
                       label="Remove"
-                      handleClick={() => remove(index)}
+                      onClick={() => remove(index)}
                     />
                   )}
                 </div>
@@ -445,20 +445,20 @@ const ShipToDetails = ({ handleNext, handleBack }) => {
           <Button
             type="submit"
             label="Add New Ship To Details"
-            handleClick={(e) => setNewShip("Add New")}
+            onClick={(e) => setNewShip("Add New")}
           />
         )}
         <Button
           type="submit"
           label="Submit"
           color="bg-green-600"
-          handleClick={(e) => setNewShip("Submit")}
+          onClick={(e) => setNewShip("Submit")}
         />
         {!quotationId && (
           <Button
             label="Back"
             color="bg-gray-700"
-            handleClick={() => handleBack("Bill To Details")}
+            onClick={() => handleBack("Bill To Details")}
           />
         )}
       </div>

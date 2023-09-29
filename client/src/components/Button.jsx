@@ -1,6 +1,6 @@
 const Button = ({
   label,
-  handleClick,
+  onClick,
   type = "button",
   disabled,
   small,
@@ -9,7 +9,7 @@ const Button = ({
   return (
     <button
       type={type}
-      onClick={handleClick}
+      onClick={onClick}
       disabled={disabled}
       className={`
         relative

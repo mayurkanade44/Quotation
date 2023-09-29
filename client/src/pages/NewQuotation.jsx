@@ -69,7 +69,7 @@ const NewQuotation = () => {
     try {
       const res = await createQuotation(data).unwrap();
       toast.success(res.msg);
-      saveAs(res.link, res.fileName);
+      saveAs(res.link, res.clientName);
       dispatch(clearQuotationEdit());
       navigate("/quotations");
     } catch (error) {
@@ -226,7 +226,7 @@ const NewQuotation = () => {
                   </h5>
                   <Button
                     label="Edit"
-                    handleClick={() => editShipToDetails(item, index)}
+                    onClick={() => editShipToDetails(item, index)}
                   />
                 </div>
                 <div className="overflow-y-auto">
@@ -276,7 +276,7 @@ const NewQuotation = () => {
               <Button
                 label="Create Quotation"
                 color="bg-green-600"
-                handleClick={handleCreateQuotation}
+                onClick={handleCreateQuotation}
               />
             </div>
           </div>
