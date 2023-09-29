@@ -2,11 +2,12 @@ import Quotation from "../models/quotationModel.js";
 import fs from "fs";
 import { createReport } from "docx-templates";
 import moment from "moment";
+import { uploadFile } from "../utils/helper.js";
 
 export const createQuotation = async (req, res) => {
   try {
-    req.body.number = 444;
-    const quotation = await Quotation.create(req.body);
+    req.body.number = "EPPL/QTN/444";
+    const quotation = req.body;
 
     const clientName = `${quotation.billToDetails.prefix.label}. ${quotation.billToDetails.name}`;
     const template = fs.readFileSync("./tmp/quotation.docx");
@@ -17,7 +18,7 @@ export const createQuotation = async (req, res) => {
 
       additionalJsContext: {
         quotationNo: quotation.number,
-        date: moment(quotation.createdAt).format("DD/MM/YYYY"),
+        date: moment().format("DD/MM/YYYY"),
         business: quotation.business,
         sales: quotation.salesName,
         referenceName: quotation.referenceName,
@@ -33,10 +34,19 @@ export const createQuotation = async (req, res) => {
     });
 
     const fileName = clientName.replace(/\//g, "-");
+    const filePath = `./tmp/${fileName}.docx`;
 
-    fs.writeFileSync(`./tmp/${fileName}.docx`, buffer);
+    fs.writeFileSync(filePath, buffer);
 
-    return res.status(201).json({ msg: `${quotation.number} created` });
+    const link = await uploadFile({ filePath, folder: "Eppl/Quotation" });
+    if (link) {
+      req.body.wordDoc = link;
+      const newQuotation = await Quotation.create(req.body);
+      return res
+        .status(201)
+        .json({ msg: `${newQuotation.number} created`, link });
+    }
+    res.status(400).json({ msg: "Quotation not created, try again later" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ msg: "Server error, try again later" });

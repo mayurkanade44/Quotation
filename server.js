@@ -3,10 +3,18 @@ import path from "path";
 import mongoose from "mongoose";
 import morgan from "morgan";
 import dotenv from "dotenv";
+import { v2 as cloudinary } from "cloudinary";
 
 import quotationRoute from "./routes/quotationRoute.js";
 
 dotenv.config();
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_KEY,
+  api_secret: process.env.CLOUD_SECRET,
+});
+
 const app = express();
 
 app.use(express.json());
