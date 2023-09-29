@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import {
+  useDeleteQuotationMutation,
   useEditQuotationMutation,
   useReviseQuotationMutation,
   useSingleQuotationQuery,
@@ -15,6 +16,7 @@ import { saveAs } from "file-saver";
 const SingleQuotation = () => {
   const { id: quotationId } = useParams();
   const [open, setOpen] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -28,6 +30,8 @@ const SingleQuotation = () => {
     useEditQuotationMutation();
   const [reviseQuotation, { isLoading: reviseLoading }] =
     useReviseQuotationMutation();
+  const [deleteQuot, { isLoading: deleteQuotLoading }] =
+    useDeleteQuotationMutation();
 
   const handleEditQuotation = ({ name, id, data }) => {
     if (name === "generalDetails") {
@@ -113,9 +117,24 @@ const SingleQuotation = () => {
     }
   };
 
+  const handleDeleteQuotation = async () => {
+    try {
+      const res = await deleteQuot({ id: quotationId }).unwrap();
+      toast.success(res.msg);
+      setOpenDelete(false);
+      navigate("/quotations");
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.data?.msg || error.error);
+    }
+  };
+
   return (
     <div className="mx-10 my-5">
-      {quotationLoading || reviseLoading || deleteLoading ? (
+      {quotationLoading ||
+      reviseLoading ||
+      deleteLoading ||
+      deleteQuotLoading ? (
         <Loading />
       ) : (
         error && <AlertMessage>{error?.data?.msg || error.error}</AlertMessage>
@@ -140,8 +159,20 @@ const SingleQuotation = () => {
               />
             </div>
             <div className="col-span-1">
-              <Button label="Delete" color="bg-red-600" />
+              <Button
+                label="Delete"
+                color="bg-red-600"
+                onClick={() => setOpenDelete(true)}
+              />
             </div>
+            {openDelete && (
+              <DeleteModal
+                open={openDelete}
+                close={() => setOpenDelete(false)}
+                description="Are you sure you want delete the quotation?"
+                onClick={handleDeleteQuotation}
+              />
+            )}
             <div className="col-span-1">
               <Button label="Send Email" color="bg-lime-600" />
             </div>

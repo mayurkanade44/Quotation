@@ -39,6 +39,13 @@ export const quotationSlice = apiSlice.injectEndpoints({
         method: "POST",
       }),
     }),
+    deleteQuotation: builder.mutation({
+      query: ({ id }) => ({
+        url: `/api/quotation/details/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Quotation"],
+    }),
   }),
 });
 
@@ -47,5 +54,6 @@ export const {
   useAllQuotationQuery,
   useSingleQuotationQuery,
   useEditQuotationMutation,
-  useReviseQuotationMutation
+  useReviseQuotationMutation,
+  useDeleteQuotationMutation,
 } = quotationSlice;

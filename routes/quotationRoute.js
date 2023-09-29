@@ -1,6 +1,7 @@
 import express from "express";
 import {
   createQuotation,
+  deleteQuotation,
   editQuotation,
   getAllQuotation,
   getQuotation,
@@ -9,6 +10,11 @@ import {
 const router = express.Router();
 
 router.route("/").post(createQuotation).get(getAllQuotation);
-router.route("/details/:id").get(getQuotation).put(editQuotation).post(revisedQuotation)
+router
+  .route("/details/:id")
+  .get(getQuotation)
+  .put(editQuotation)
+  .post(revisedQuotation)
+  .delete(deleteQuotation);
 
 export default router;

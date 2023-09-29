@@ -1,8 +1,7 @@
 import { AiOutlineDelete } from "react-icons/ai";
 import Modal from "./Modal";
 
-const DeleteModal = ({ open, close, description, handleClick }) => {
-  console.log('dete');
+const DeleteModal = ({ open, close, description, onClick }) => {
   return (
     <Modal open={open}>
       <div className="text-center w-60">
@@ -13,7 +12,7 @@ const DeleteModal = ({ open, close, description, handleClick }) => {
         </div>
         <div className="flex gap-4 pt-2">
           <button
-            onClick={handleClick}
+            onClick={onClick}
             type="button"
             className="btn bg-red-700 w-full rounded-md text-white py-1 cursor-pointer"
           >

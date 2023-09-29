@@ -12,7 +12,6 @@ const Button = ({
       onClick={onClick}
       disabled={disabled}
       className={`
-        relative
         disabled:opacity-70
         disabled:cursor-not-allowed
         rounded-lg

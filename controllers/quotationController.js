@@ -170,3 +170,17 @@ export const editQuotation = async (req, res) => {
     res.status(500).json({ msg: "Server error, try again later" });
   }
 };
+
+export const deleteQuotation = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const quotation = await Quotation.findById(id);
+    if (!quotation) return res.status(404).json({ msg: "Quotation not found" });
+
+    await Quotation.findByIdAndDelete(id);
+    return res.json({ msg: "Quotation deleted" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "Server error, try again later" });
+  }
+};
