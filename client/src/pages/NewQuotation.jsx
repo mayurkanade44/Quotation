@@ -9,7 +9,13 @@ import { AiOutlineCheck, AiOutlineCheckCircle } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { useCreateQuotationMutation } from "../redux/quotationSlice";
 import { toast } from "react-toastify";
-import { setQuotationDetails, setQuotationEdit } from "../redux/helperSlice";
+import {
+  clearQuotationEdit,
+  setQuotationDetails,
+  setQuotationEdit,
+} from "../redux/helperSlice";
+import { useNavigate } from "react-router-dom";
+import { saveAs } from "file-saver";
 
 const step = [
   { id: "01", name: "General Details", status: "current" },
@@ -21,6 +27,7 @@ const step = [
 const NewQuotation = () => {
   const [steps, setSteps] = useState(step);
   const [show, setShow] = useState("General Details");
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const { quotationDetails } = useSelector((store) => store.helper);
   const [createQuotation, { isLoading }] = useCreateQuotationMutation();
@@ -62,8 +69,12 @@ const NewQuotation = () => {
     try {
       const res = await createQuotation(data).unwrap();
       toast.success(res.msg);
+      saveAs(res.link, res.fileName);
+      dispatch(clearQuotationEdit());
+      navigate("/quotations");
     } catch (error) {
       console.log(error);
+      toast.error(error?.data?.msg || error.error);
     }
   };
 

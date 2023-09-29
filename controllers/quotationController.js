@@ -42,9 +42,11 @@ export const createQuotation = async (req, res) => {
     if (link) {
       req.body.wordDoc = link;
       const newQuotation = await Quotation.create(req.body);
-      return res
-        .status(201)
-        .json({ msg: `${newQuotation.number} created`, link });
+      return res.status(201).json({
+        msg: `${newQuotation.number} created`,
+        link,
+        fileName: `${newQuotation.shipToDetails[0].name} ${newQuotation.number}`,
+      });
     }
     res.status(400).json({ msg: "Quotation not created, try again later" });
   } catch (error) {

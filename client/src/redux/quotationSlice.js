@@ -8,6 +8,7 @@ export const quotationSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["Quotation"],
     }),
     allQuotation: builder.query({
       query: ({ search }) => ({
