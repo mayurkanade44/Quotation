@@ -438,7 +438,6 @@ const ShipToDetails = ({ handleNext, handleBack }) => {
           </div>
         );
       })}
-
       <hr className="h-px my-3 mb-2 border-0 dark:bg-gray-700" />
       <div className="flex justify-center">
         {!quotationEdit.status && (

@@ -8,15 +8,17 @@ import {
 import { AlertMessage, Button, Loading } from "../components";
 import { useDispatch, useSelector } from "react-redux";
 import { setQuotationDetails, setQuotationEdit } from "../redux/helperSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DeleteModal from "../components/Modals/DeleteModal";
 import { toast } from "react-toastify";
 import { saveAs } from "file-saver";
+import SendEmail from "../components/Modals/SendEmail";
 
 const SingleQuotation = () => {
   const { id: quotationId } = useParams();
   const [open, setOpen] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
+  const [emails, setEmails] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -74,7 +76,6 @@ const SingleQuotation = () => {
         })
       );
     }
-
     navigate(`/edit-quotation/${quotationId}`);
   };
 
@@ -129,6 +130,20 @@ const SingleQuotation = () => {
     }
   };
 
+  useEffect(() => {
+    if (quotation) {
+      quotation.billToDetails.contact.map((item) => {
+        item.email && !emails.includes(item.email) && emails.push(item.email);
+      });
+      quotation.shipToDetails.map((item) =>
+        item.contact.map(
+          (con) =>
+            con.email && !emails.includes(con.email) && emails.push(con.email)
+        )
+      );
+    }
+  }, [quotation]);
+
   return (
     <div className="mx-10 my-5">
       {quotationLoading ||
@@ -174,7 +189,7 @@ const SingleQuotation = () => {
               />
             )}
             <div className="col-span-1">
-              <Button label="Send Email" color="bg-lime-600" />
+              <SendEmail emails={emails} />
             </div>
             <div className="col-span-12">
               <hr className="h-px my-2 border-0 dark:bg-gray-700" />
