@@ -9,6 +9,7 @@ import {
 import { useEditQuotationMutation } from "../../redux/quotationSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useState } from "react";
 
 const BillToDetails = ({ handleNext, handleBack }) => {
   const dispatch = useDispatch();
@@ -62,8 +63,8 @@ const BillToDetails = ({ handleNext, handleBack }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(submit)}>
-      <div className="lg:grid lg:grid-cols-2 lg:gap-x-10 px-2 py-4 bg-gray-50">
+    <form onSubmit={handleSubmit(submit)} className="bg-gray-50 p-2">
+      <div className="lg:grid lg:grid-cols-2 lg:gap-x-10 px-2 py-4 ">
         <div>
           <h2 className="text-xl font-medium text-center text-blue-600">
             Billing Information
@@ -104,7 +105,7 @@ const BillToDetails = ({ handleNext, handleBack }) => {
             </div>
             <div>
               <InputRow
-                label="Flat/Office no & Premise Name"
+                label="Premise Name & Flat/Office no"
                 id="address"
                 errors={errors}
                 register={register}

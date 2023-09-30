@@ -138,6 +138,7 @@ const ShipToDetails = ({ handleNext, handleBack }) => {
                 <div className="w-48">
                   <Controller
                     name="prefix"
+                    rules={{ required: "Select prefix" }}
                     control={control}
                     render={({ field: { onChange, value, ref } }) => (
                       <InputSelect
@@ -168,7 +169,7 @@ const ShipToDetails = ({ handleNext, handleBack }) => {
             </div>
             <div>
               <InputRow
-                label="Flat/Office no & Premise Name"
+                label="Premise Name & Flat/Office no"
                 id="address"
                 errors={errors}
                 register={register}
@@ -372,6 +373,9 @@ const ShipToDetails = ({ handleNext, handleBack }) => {
                       />
                     )}
                   />
+                  <p className="text-xs text-red-500 -bottom-4 pl-1">
+                    {errors.serviceDetails?.message}
+                  </p>
                 </div>
                 <Controller
                   name={`serviceDetails.${index}.frequency`}

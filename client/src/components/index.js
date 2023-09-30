@@ -5,7 +5,7 @@ import InputTextarea from "./InputTextarea";
 import Loading from "./Loading";
 import ContactTable from "./ContactTable";
 import AlertMessage from "./AlertMessage";
-
+import ProgressSteps from "./ProgressSteps";
 
 export {
   InputRow,
@@ -15,4 +15,5 @@ export {
   Loading,
   ContactTable,
   AlertMessage,
+  ProgressSteps,
 };
