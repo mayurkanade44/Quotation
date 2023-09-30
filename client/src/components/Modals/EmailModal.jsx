@@ -3,7 +3,7 @@ import Button from "../Button";
 import Modal from "./Modal";
 import InputRow from "../InputRow";
 
-const SendEmail = ({ emails }) => {
+const EmailModal = ({ emails }) => {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState("");
 
@@ -73,4 +73,4 @@ const SendEmail = ({ emails }) => {
     </div>
   );
 };
-export default SendEmail;
+export default EmailModal;

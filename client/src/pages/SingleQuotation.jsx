@@ -12,7 +12,8 @@ import { useEffect, useState } from "react";
 import DeleteModal from "../components/Modals/DeleteModal";
 import { toast } from "react-toastify";
 import { saveAs } from "file-saver";
-import SendEmail from "../components/Modals/SendEmail";
+import SendEmail from "../components/Modals/EmailModal";
+import { QuotationModal } from "../components/Modals";
 
 const SingleQuotation = () => {
   const { id: quotationId } = useParams();
@@ -163,15 +164,13 @@ const SingleQuotation = () => {
               </h1>
             </div>
             <div className="col-span-2">
-              <a href={quotation.wordDoc}>
-                <Button label="Download" color="bg-green-600" />
-              </a>
-            </div>
-            <div className="col-span-2">
-              <Button
-                label="Revise Quotation"
-                onClick={createReviseQuotation}
-              />
+              {quotation.docx ? (
+                <a href={quotation.docx}>
+                  <Button label="Download" color="bg-green-600" />
+                </a>
+              ) : (
+                <QuotationModal id={quotationId} />
+              )}
             </div>
             <div className="col-span-1">
               <Button
@@ -188,7 +187,7 @@ const SingleQuotation = () => {
                 onClick={handleDeleteQuotation}
               />
             )}
-            <div className="col-span-1">
+            <div className="col-span-2">
               <SendEmail emails={emails} />
             </div>
             <div className="col-span-12">
