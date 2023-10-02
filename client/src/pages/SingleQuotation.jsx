@@ -174,7 +174,11 @@ const SingleQuotation = () => {
               />
             )}
             <div className="col-span-2">
-              <SendEmail emails={emails} />
+              <SendEmail
+                emails={emails}
+                fileName={quotation.number}
+                id={quotationId}
+              />
             </div>
             <div className="col-span-12">
               <hr className="h-px my-2 border-0 dark:bg-gray-700" />

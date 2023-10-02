@@ -1,11 +1,33 @@
 import { useEffect, useState } from "react";
 import Button from "../Button";
 import Modal from "./Modal";
-import InputRow from "../InputRow";
+import { useSendQuotationMutation } from "../../redux/quotationSlice";
+import { toast } from "react-toastify";
 
-const EmailModal = ({ emails }) => {
+const EmailModal = ({ emails, fileName, id }) => {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState("");
+  const [files, setFiles] = useState([]);
+
+  const [sendEmail, { isLoading }] = useSendQuotationMutation();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    let to = emails;
+    if (email) to = `${emails},${email}`;
+    try {
+      const data = new FormData();
+      data.set("emails", to);
+      files.forEach((file) => {
+        data.append("files", file);
+      });
+      const res = await sendEmail({ id, data }).unwrap();
+      toast.success(res.msg);
+      setOpen(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div>
@@ -16,7 +38,7 @@ const EmailModal = ({ emails }) => {
       />
       {open && (
         <Modal open={open}>
-          <form className="text-center w-[500px]">
+          <form className="text-center w-[500px]" onSubmit={handleSubmit}>
             <div className="mx-auto">
               <h3 className="text-lg font-black text-gray-800 ">
                 Send Quotation
@@ -25,8 +47,8 @@ const EmailModal = ({ emails }) => {
                 <b>To:</b> {emails}
               </h3>
               <div className="flex items-center my-3">
-                <label className="block w-44 text-md font-bold leading-6 text-gray-900">
-                  Extra Email Ids:
+                <label className="block w-52 text-md font-bold leading-6 text-gray-900">
+                  Additional Emails:
                 </label>
                 <input
                   type="email"
@@ -44,24 +66,27 @@ const EmailModal = ({ emails }) => {
                 </label>
                 <input
                   type="file"
-                  onChange={(e) => setImages(Array.from(e.target.files))}
+                  onChange={(e) => setFiles(Array.from(e.target.files))}
                   multiple
                   className="mt-0.5"
-                  accept="image/*"
                 />
               </div>
-              <div className="flex pl-2 my-2">Attachments:</div>
+              <div className="flex pl-2 mt-3 mb-2">
+                <span className="font-bold mr-1">Attachments:</span>
+                <span className="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs font-medium text-purple-700 ring-1 ring-inset ring-purple-700/10">
+                  {fileName}
+                </span>
+              </div>
             </div>
             <div className="flex gap-4 pt-2">
               <button
-                type="button"
+                type="submit"
                 className="btn bg-green-600 w-full rounded-md text-white py-1 cursor-pointer"
               >
                 Send Email
               </button>
               <button
                 onClick={() => setOpen(false)}
-                type="button"
                 className="btn bg-gray-200 w-full rounded-md text-dark py-1 font-semibold cursor-pointer"
               >
                 Cancel
