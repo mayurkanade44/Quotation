@@ -17,10 +17,9 @@ export const createQuotation = async (req, res) => {
 
       additionalJsContext: {
         quotationNo: quotation.number,
-        date: moment().format("DD/MM/YYYY"),
-        business: quotation.business,
+        date: moment(quotation.date).format("DD/MM/YYYY"),
         sales: quotation.salesName,
-        referenceName: quotation.referenceName,
+        reference: `Your enquiry and our discussion had with ${quotation.referenceName}`,
         name: `${quotation.billToDetails.prefix.label}. ${quotation.billToDetails.name}`,
         address: quotation.billToDetails.address,
         road: quotation.billToDetails.road,
@@ -61,6 +60,17 @@ export const revisedQuotation = async (req, res) => {
     const quotation = await Quotation.findById(id);
     if (!quotation) return res.status(404).json({ msg: "Quotation not found" });
 
+    let quotationNo = quotation.number;
+    let reference = `Your enquiry and our discussion had with ${quotation.referenceName}`;
+    let date = quotation.date;
+    if (req.body.revised) {
+      reference = `Our Earlier Quotation No. ${quotationNo} dated ${moment(
+        date
+      ).format("DD/MM/YYYY")} being revised`;
+      quotationNo = `EPPL/QTN/444/R-${quotation.revisedCount + 1}`;
+      date = req.body.date;
+    }
+
     const template = fs.readFileSync("./tmp/quotation.docx");
 
     const buffer = await createReport({
@@ -68,11 +78,10 @@ export const revisedQuotation = async (req, res) => {
       template,
 
       additionalJsContext: {
-        quotationNo: quotation.number,
-        date: moment().format("DD/MM/YYYY"),
-        business: quotation.business,
+        quotationNo,
+        date: moment(date).format("DD/MM/YYYY"),
         sales: quotation.salesName,
-        referenceName: quotation.referenceName,
+        reference,
         name: `${quotation.billToDetails.prefix.label}. ${quotation.billToDetails.name}`,
         address: quotation.billToDetails.address,
         road: quotation.billToDetails.road,
@@ -92,7 +101,12 @@ export const revisedQuotation = async (req, res) => {
 
     const link = await uploadFile({ filePath, folder: "Eppl/Quotation" });
     if (link) {
-      quotation.wordDoc = link;
+      if (req.body.revised) {
+        quotation.revisedCount += 1;
+        quotation.date = req.body.date;
+        quotation.number = quotationNo;
+      }
+      quotation.docx = link;
       await quotation.save();
       return res.status(201).json({
         msg: `${quotation.number} revised`,
@@ -158,6 +172,8 @@ export const editQuotation = async (req, res) => {
   try {
     const quotation = await Quotation.findById(id);
     if (!quotation) return res.status(404).json({ msg: "Quotation not found" });
+
+    req.body.docx = "";
 
     await Quotation.findByIdAndUpdate(id, req.body, {
       new: true,

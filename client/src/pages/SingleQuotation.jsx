@@ -11,7 +11,6 @@ import { setQuotationDetails, setQuotationEdit } from "../redux/helperSlice";
 import { useEffect, useState } from "react";
 import DeleteModal from "../components/Modals/DeleteModal";
 import { toast } from "react-toastify";
-import { saveAs } from "file-saver";
 import SendEmail from "../components/Modals/EmailModal";
 import { QuotationModal } from "../components/Modals";
 
@@ -100,19 +99,6 @@ const SingleQuotation = () => {
       }).unwrap();
       toast.success("Ship to details deleted");
       setOpen(false);
-    } catch (error) {
-      console.log(error);
-      toast.error(error?.data?.msg || error.error);
-    }
-  };
-
-  const handleDownload = ({ link }) => {};
-
-  const createReviseQuotation = async () => {
-    try {
-      const res = await reviseQuotation({ id: quotationId }).unwrap();
-      toast.success(res.msg);
-      saveAs(res.link, `${res.clientName}.docx`);
     } catch (error) {
       console.log(error);
       toast.error(error?.data?.msg || error.error);

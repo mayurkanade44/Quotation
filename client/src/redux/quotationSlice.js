@@ -34,10 +34,12 @@ export const quotationSlice = apiSlice.injectEndpoints({
       invalidatesTags: ["Quotation"],
     }),
     reviseQuotation: builder.mutation({
-      query: ({ id }) => ({
+      query: ({ id, data }) => ({
         url: `/api/quotation/details/${id}`,
         method: "POST",
+        body: data,
       }),
+      invalidatesTags: ["Quotation"],
     }),
     deleteQuotation: builder.mutation({
       query: ({ id }) => ({

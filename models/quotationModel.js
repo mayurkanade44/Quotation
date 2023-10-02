@@ -24,6 +24,7 @@ const shipToSchema = new mongoose.Schema({
 const quotationSchema = new mongoose.Schema(
   {
     number: { type: String, required: true },
+    date: { type: Date, required: true },
     salesName: { type: Object, required: true },
     referenceName: { type: String, required: true },
     otherReference: { type: String },
@@ -42,8 +43,9 @@ const quotationSchema = new mongoose.Schema(
     shipToDetails: [shipToSchema],
     payment: { type: String, required: true },
     approved: { type: Boolean, default: false },
-    wordDoc: { type: String },
+    docx: { type: String },
     pdf: { type: String },
+    revisedCount: { type: Number, default: 0 },
     // user: {
     //   type: Mongoose.Schema.Types.ObjectId,
     //   required: true,

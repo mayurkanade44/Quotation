@@ -63,6 +63,7 @@ const NewQuotation = () => {
     };
 
     try {
+      data.date = new Date();
       const res = await createQuotation(data).unwrap();
       toast.success(res.msg);
       saveAs(res.link, res.clientName);
