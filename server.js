@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import morgan from "morgan";
 import dotenv from "dotenv";
 import { v2 as cloudinary } from "cloudinary";
+import fileUpload from "express-fileupload";
 
 import quotationRoute from "./routes/quotationRoute.js";
 
@@ -18,6 +19,7 @@ cloudinary.config({
 const app = express();
 
 app.use(express.json());
+app.use(fileUpload({ useTempFiles: true }));
 if (process.env.NODE_ENV !== "production") app.use(morgan("dev"));
 
 app.use("/api/quotation", quotationRoute);

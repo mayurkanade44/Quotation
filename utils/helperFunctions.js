@@ -40,13 +40,13 @@ export const sendEmail = async ({
   try {
     let defaultClient = SibApiV3Sdk.ApiClient.instance;
     let apiKey = defaultClient.authentications["api-key"];
-    apiKey.apiKey = process.env.BREVO_API_KEY;
+    apiKey.apiKey = process.env.BREVO_KEY;
     let apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
     let sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
 
     sendSmtpEmail.sender = {
       name: "EPCORN",
-      email: process.env.NO_REPLY_EMAIL,
+      email: 'exteam.epcorn@gmail.com',
     };
     sendSmtpEmail.to = emailList;
     sendSmtpEmail.params = dynamicData;

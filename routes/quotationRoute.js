@@ -6,6 +6,7 @@ import {
   getAllQuotation,
   getQuotation,
   revisedQuotation,
+  sendQuotation,
 } from "../controllers/quotationController.js";
 const router = express.Router();
 
@@ -16,5 +17,6 @@ router
   .put(editQuotation)
   .post(revisedQuotation)
   .delete(deleteQuotation);
+router.put("/send/:id", sendQuotation)
 
 export default router;
