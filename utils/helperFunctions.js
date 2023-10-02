@@ -3,6 +3,7 @@ import moment from "moment";
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
 import SibApiV3Sdk from "@getbrevo/brevo";
+import { createReport } from "docx-templates";
 
 export const capitalLetter = (phrase) => {
   return phrase
@@ -55,6 +56,22 @@ export const sendEmail = async ({
     return true;
   } catch (error) {
     console.log(error);
+    return false;
+  }
+};
+
+export const createQuotationDoc = async ({ template, data }) => {
+  try {
+    const buffer = await createReport({
+      cmdDelimiter: ["{", "}"],
+      template,
+
+      additionalJsContext: data,
+    });
+
+    return buffer;
+  } catch (error) {
+    console.log("createDoc", error);
     return false;
   }
 };

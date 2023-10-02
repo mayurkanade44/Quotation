@@ -22,7 +22,10 @@ const QuotationModal = ({ id }) => {
       toast.success(res.msg);
       saveAs(res.link, `${res.clientName}.docx`);
       setOpen(false);
+      setRevised(false);
     } catch (error) {
+      setOpen(false);
+      setRevised(false);
       console.log(error);
       toast.error(error?.data?.msg || error.error);
     }
