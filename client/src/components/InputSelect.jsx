@@ -15,6 +15,7 @@ const InputSelect = ({
         <span className="text-red-500 required-dot ml-0.5">*</span>
       </label>
       <Select
+        defaultValue={value}
         placeholder={placeholder}
         isMulti={isMulti}
         className="basic-multi-select"
