@@ -46,6 +46,9 @@ const quotationSchema = new mongoose.Schema(
     docx: { type: String },
     pdf: { type: String },
     revisedCount: { type: Number, default: 0 },
+    sentEmailData: [Object],
+    lastEmailSent: { type: Date },
+    reject: { type: Boolean, default: false },
     // user: {
     //   type: Mongoose.Schema.Types.ObjectId,
     //   required: true,

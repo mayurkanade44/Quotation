@@ -36,14 +36,14 @@ export const createQuotation = async (req, res) => {
 
     const buffer = await createQuotationDoc({ template, data });
     if (buffer) {
-      const clientName = `${quotation.shipToDetails[0].name} ${quotation.number}`;
+      const clientName = `${quotation.shipToDetails[0].name} ${quotation.number}.docx`;
       const fileName = clientName.replace(/\//g, "-");
-      const filePath = `./tmp/${fileName}.docx`;
+      const filePath = `./tmp/${fileName}`;
       fs.writeFileSync(filePath, buffer);
 
       const link = await uploadFile({ filePath, folder: "Eppl/Quotation" });
       if (link) {
-        req.body.wordDoc = link;
+        req.body.docx = link;
         const newQuotation = await Quotation.create(req.body);
         return res.status(201).json({
           msg: `${newQuotation.number} created`,
@@ -246,8 +246,18 @@ export const sendQuotation = async (req, res) => {
       templateId: 2,
       dynamicData,
     });
-    if (mail) res.json({ msg: "Email sent" });
-    else res.json({ msg: "Error" });
+    if (mail) {
+      if (quotation.sentEmailData.length) {
+        quotation.sentEmailData.push({
+          date: new Date(),
+          user: "Mayur",
+        });
+      } else quotation.sentEmailData = [{ date: new Date(), user: "Mayur" }];
+      quotation.lastEmailSent = new Date();
+      await quotation.save();
+      return res.json({ msg: "Quotation sent" });
+    }
+    return res.status(400).json({ msg: "Quotation not send" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ msg: "Server error, try again later" });
