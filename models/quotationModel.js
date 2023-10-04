@@ -48,6 +48,8 @@ const quotationSchema = new mongoose.Schema(
     sentEmailData: [Object],
     lastEmailSent: { type: Date },
     reject: { type: Boolean, default: false },
+    lastDoc: { type: String },
+    revisedHistory: [Object],
     // user: {
     //   type: Mongoose.Schema.Types.ObjectId,
     //   required: true,

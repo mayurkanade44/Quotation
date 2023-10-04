@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 import DeleteModal from "../components/Modals/DeleteModal";
 import { toast } from "react-toastify";
 import SendEmail from "../components/Modals/EmailModal";
-import { QuotationModal } from "../components/Modals";
+import { QuotationHistoryModal, QuotationModal } from "../components/Modals";
 
 const SingleQuotation = () => {
   const { id: quotationId } = useParams();
@@ -170,6 +170,9 @@ const SingleQuotation = () => {
                 fileName={quotation.number}
                 id={quotationId}
               />
+            </div>
+            <div className="col-span-2">
+              <QuotationHistoryModal data={quotation.revisedHistory} />
             </div>
             <div className="col-span-2">
               <Button

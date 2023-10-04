@@ -74,6 +74,16 @@ export const revisedQuotation = async (req, res) => {
     let reference = `Your enquiry and our discussion had with ${quotation.referenceName}`;
     let date = quotation.date;
     if (req.body.revised) {
+      if (quotation.revisedHistory.length > 0) {
+        quotation.history.push({
+          link: quotation.lastDoc,
+          name: quotationNo,
+          user: "Mayur",
+        });
+      } else
+        quotation.revisedHistory = [
+          { link: quotation.lastDoc, name: quotationNo, user: "Mayur" },
+        ];
       reference = `Our Earlier Quotation No. ${quotationNo} dated ${moment(
         date
       ).format("DD/MM/YYYY")} being revised`;
@@ -185,6 +195,7 @@ export const editQuotation = async (req, res) => {
     const quotation = await Quotation.findById(id);
     if (!quotation) return res.status(404).json({ msg: "Quotation not found" });
 
+    if (quotation.docx) req.body.lastDoc = quotation.docx;
     req.body.docx = "";
 
     await Quotation.findByIdAndUpdate(id, req.body, {
