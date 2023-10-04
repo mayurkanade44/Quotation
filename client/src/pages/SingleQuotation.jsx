@@ -211,18 +211,24 @@ const SingleQuotation = () => {
               <hr className="h-px my-2 border-0 dark:bg-gray-700" />
             </div>
             <div className="col-span-12">
-              <div className="lg:flex items-center gap-x-3">
-                <h5 className="text-lg">
-                  <span className="font-semibold">Sales Representative: </span>
-                  {quotation.salesName.label}
-                </h5>
+              <div className="lg:flex items-center justify-between gap-x-3">
                 <h5 className="text-lg">
                   <span className="font-semibold">Reference Person: </span>
                   {quotation.referenceName}
                 </h5>
+                {quotation.otherReference && (
+                  <h5 className="text-lg">
+                    <span className="font-semibold">Other Reference: </span>
+                    {quotation.otherReference}
+                  </h5>
+                )}
                 <h5 className="text-lg">
                   <span className="font-semibold">Payment Terms: </span>
                   {quotation.payment}
+                </h5>
+                <h5 className="text-lg">
+                  <span className="font-semibold">Created By: </span>
+                  {quotation.user?.name || "Mayur"}
                 </h5>
                 <Button
                   label="Edit"

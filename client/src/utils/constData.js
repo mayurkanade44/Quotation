@@ -13,7 +13,7 @@ export const prefix = [
   { label: "Mr", value: "Mr" },
   { label: "Mrs", value: "Mrs" },
   { label: "Ms", value: "Ms" },
-  { label: "M/S", value: "M/S" },
+  { label: "M/s", value: "M/s" },
 ];
 
 export const service = [

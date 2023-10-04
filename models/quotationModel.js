@@ -41,7 +41,7 @@ const quotationSchema = new mongoose.Schema(
     },
     shipToDetails: [shipToSchema],
     payment: { type: String, required: true },
-    approved: { type: Boolean, default: false },
+    approve: { type: Boolean, default: false },
     docx: { type: String },
     pdf: { type: String },
     revisedCount: { type: Number, default: 0 },

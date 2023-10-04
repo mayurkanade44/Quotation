@@ -95,6 +95,9 @@ const AllQuotation = () => {
               <th className="font-bold text-left  dark:border-neutral-800 border-2 px-3">
                 Sales Representative
               </th>
+              <th className="font-bold text-center  dark:border-neutral-800 border-2 px-3">
+                Progress
+              </th>
               <th className="font-bold text-center  dark:border-neutral-800 border-2 w-28 px-3">
                 Details
               </th>
@@ -118,11 +121,30 @@ const AllQuotation = () => {
                 <td className="px-3 border-r font-normal dark:border-neutral-500">
                   {quotation.salesName.label}
                 </td>
-
+                <td className="px-3 border-r font-normal text-center dark:border-neutral-500">
+                  {quotation.approve ? (
+                    <span className="text-green-600">Approved</span>
+                  ) : quotation.reject ? (
+                    <span className="text-red-600">Rejected</span>
+                  ) : quotation.lastEmailSent ? (
+                    <span className="text-blue-600">Approved</span>
+                  ) : (
+                    "Working"
+                  )}
+                </td>
                 <td className="px-3 border-r font-normal text-center dark:border-neutral-500">
                   <Link to={`/quotation-details/${quotation._id}`}>
-                    <Button label="Details" height="py-2" width="w-20" />
+                    <Button label="Details" height="h-7" />
                   </Link>
+                  {quotation.docx && (
+                    <a href={quotation.docx}>
+                      <Button
+                        label="Download"
+                        color="bg-green-600"
+                        height="h-7"
+                      />
+                    </a>
+                  )}
                 </td>
               </tr>
             ))}
