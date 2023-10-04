@@ -15,6 +15,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEditQuotationMutation } from "../../redux/quotationSlice";
+import AddService from "./AddService";
 
 const ShipToDetails = ({ handleNext, handleBack }) => {
   const { id: quotationId } = useParams();
@@ -52,7 +53,12 @@ const ShipToDetails = ({ handleNext, handleBack }) => {
       serviceDetails: [
         {
           treatmentLocation: "",
-          services: [],
+          services: [
+            {
+              name: "",
+              freq: "",
+            },
+          ],
           frequency: "",
           cost: "",
           costFrequency: "",
@@ -341,10 +347,10 @@ const ShipToDetails = ({ handleNext, handleBack }) => {
       {fields.map((field, index) => {
         return (
           <div
-            className="grid grid-cols-1 gap-y-3 sm:grid-cols-3 sm:gap-x-4"
+            className="grid grid-cols-1 sm:grid-cols-5 sm:gap-x-2"
             key={field.id}
           >
-            <div className="md:col-span-1">
+            <div className="md:col-span-2">
               <InputTextarea
                 label="Treatment Location"
                 rows={4}
@@ -355,42 +361,8 @@ const ShipToDetails = ({ handleNext, handleBack }) => {
               <p className="text-xs text-red-500 -bottom-4 pl-1">
                 {errors.serviceDetails && "Treatment location is required"}
               </p>
-            </div>
-            <div className="md:col-span-2">
-              <div className="sm:grid sm:grid-cols-3 gap-x-5 gap-y-2">
-                <div className="md:col-span-2">
-                  <Controller
-                    name={`serviceDetails.${index}.services`}
-                    control={control}
-                    rules={{ required: "Service name is required" }}
-                    render={({ field: { onChange, value, ref } }) => (
-                      <InputSelect
-                        options={service}
-                        onChange={onChange}
-                        value={value}
-                        label="Service Name"
-                        isMulti={true}
-                      />
-                    )}
-                  />
-                  <p className="text-xs text-red-500 -bottom-4 pl-1">
-                    {errors.serviceDetails?.message}
-                  </p>
-                </div>
-                <Controller
-                  name={`serviceDetails.${index}.frequency`}
-                  control={control}
-                  rules={{ required: "Select service frequency" }}
-                  render={({ field: { onChange, value, ref } }) => (
-                    <InputSelect
-                      options={serviceFrequency}
-                      onChange={onChange}
-                      value={value}
-                      label="Service Frequency"
-                    />
-                  )}
-                />
-                <div>
+              <div className="sm:grid sm:grid-cols-3 gap-x-2">
+                <div className="md:col-span-1">
                   <InputRow
                     label="Cost"
                     placeholder="Total Cost"
@@ -402,41 +374,55 @@ const ShipToDetails = ({ handleNext, handleBack }) => {
                     {errors.serviceDetails && "Cost is required"}
                   </p>
                 </div>
-                <Controller
-                  name={`serviceDetails.${index}.costFrequency`}
-                  control={control}
-                  rules={{ required: "Select cost frequency is required" }}
-                  render={({ field: { onChange, value, ref } }) => (
-                    <InputSelect
-                      options={costFrequency}
-                      onChange={onChange}
-                      value={value}
-                      label="Cost Frequency"
-                    />
-                  )}
-                />
-                <div className="flex justify-start">
-                  <Button
-                    label="Add"
-                    color="bg-black"
-                    onClick={() =>
-                      append({
-                        treatmentLocation: "",
-                        cost: "",
-                        costFrequency: "",
-                        services: [],
-                        frequency: "",
-                      })
-                    }
+                <div className="col-span-2">
+                  <Controller
+                    name={`serviceDetails.${index}.costFrequency`}
+                    control={control}
+                    rules={{ required: "Select cost frequency is required" }}
+                    render={({ field: { onChange, value, ref } }) => (
+                      <InputSelect
+                        options={costFrequency}
+                        onChange={onChange}
+                        value={value}
+                        label="Cost Frequency"
+                      />
+                    )}
                   />
-                  {index > 0 && (
-                    <Button
-                      color="bg-red-600"
-                      label="Remove"
-                      onClick={() => remove(index)}
-                    />
-                  )}
                 </div>
+              </div>
+            </div>
+            <div className="md:col-span-3">
+              <AddService
+                nestIndex={index}
+                {...{ control, register, errors, Controller }}
+              />
+            </div>
+            <div className="md:col-span-5 mt-2">
+              <div className="flex justify-center">
+                <Button
+                  label="Add"
+                  color="bg-black"
+                  onClick={() =>
+                    append({
+                      treatmentLocation: "",
+                      cost: "",
+                      costFrequency: "",
+                      services: [
+                        {
+                          name: "",
+                          freq: "",
+                        },
+                      ],
+                    })
+                  }
+                />
+                {index > 0 && (
+                  <Button
+                    color="bg-red-600"
+                    label="Remove"
+                    onClick={() => remove(index)}
+                  />
+                )}
               </div>
             </div>
           </div>
