@@ -53,13 +53,12 @@ const ShipToDetails = ({ handleNext, handleBack }) => {
       serviceDetails: [
         {
           treatmentLocation: "",
-          services: [
+          service: [
             {
               name: "",
-              freq: "",
+              frequency: "",
             },
           ],
-          frequency: "",
           cost: "",
           costFrequency: "",
         },
@@ -407,10 +406,10 @@ const ShipToDetails = ({ handleNext, handleBack }) => {
                       treatmentLocation: "",
                       cost: "",
                       costFrequency: "",
-                      services: [
+                      service: [
                         {
                           name: "",
-                          freq: "",
+                          frequency: "",
                         },
                       ],
                     })

@@ -198,13 +198,17 @@ const NewQuotation = () => {
                                 {service.treatmentLocation}
                               </td>
                               <td className="whitespace-nowrap border-r px-2 py-1 font-normal dark:border-neutral-500">
-                                {service.services.map((i) => i.label + ", ")}
+                                {service.service?.map(
+                                  (i) => i.name.label + ", "
+                                )}
                               </td>
                               <td className="whitespace-nowrap border-r px-2 py-1 font-normal dark:border-neutral-500">
-                                {service.frequency.label}
+                                {service.service?.map(
+                                  (i) => i.frequency.label + ", "
+                                )}
                               </td>
                               <td className="whitespace-nowrap border-r px-2 py-1 font-normal dark:border-neutral-500">
-                                {service.cost} /{service.costFrequency.label}
+                                {service.cost} / {service.costFrequency.label}
                               </td>
                             </tr>
                           ))}

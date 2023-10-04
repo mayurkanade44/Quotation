@@ -8,7 +8,7 @@ import Button from "../Button";
 
 const AddService = ({ nestIndex, control, register, errors, Controller }) => {
   const { fields, append, remove } = useFieldArray({
-    name: `serviceDetails[${nestIndex}].services`,
+    name: `serviceDetails[${nestIndex}].service`,
     control,
   });
 
@@ -19,7 +19,7 @@ const AddService = ({ nestIndex, control, register, errors, Controller }) => {
           <div className="flex items-end gap-x-1" key={item.id}>
             <div className="w-full">
               <Controller
-                name={`serviceDetails[${nestIndex}].services[${k}].name`}
+                name={`serviceDetails[${nestIndex}].service[${k}].name`}
                 control={control}
                 rules={{ required: "Service name is required" }}
                 render={({ field: { onChange, value, ref } }) => (
@@ -34,7 +34,7 @@ const AddService = ({ nestIndex, control, register, errors, Controller }) => {
             </div>
             <div className="w-full">
               <Controller
-                name={`serviceDetails[${nestIndex}].services[${k}].freq`}
+                name={`serviceDetails[${nestIndex}].service[${k}].frequency`}
                 control={control}
                 rules={{ required: "Service frequency is required" }}
                 render={({ field: { onChange, value, ref } }) => (

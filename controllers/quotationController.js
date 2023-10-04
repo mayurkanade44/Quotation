@@ -18,12 +18,17 @@ export const createQuotation = async (req, res) => {
     req.body.number = "EPPL/QTN/444";
     const quotation = req.body;
 
-    const template = fs.readFileSync("./tmp/quotation.docx");
+    let otherReference = "";
+    if (quotation.otherReference)
+      otherReference = `2. ${quotation.otherReference}`;
+
+    const template = fs.readFileSync("./tmp/quotation1.docx");
     const data = {
       quotationNo: quotation.number,
       date: moment(quotation.date).format("DD/MM/YYYY"),
       sales: quotation.salesName,
       reference: `Your enquiry and our discussion had with ${quotation.referenceName}`,
+      otherReference,
       name: `${quotation.billToDetails.prefix.label}. ${quotation.billToDetails.name}`,
       address: quotation.billToDetails.address,
       road: quotation.billToDetails.road,
@@ -77,12 +82,17 @@ export const revisedQuotation = async (req, res) => {
       date = req.body.date;
     }
 
-    const template = fs.readFileSync("./tmp/quotation.docx");
+    let otherReference = "";
+    if (quotation.otherReference)
+      otherReference = `2. ${quotation.otherReference}`;
+
+    const template = fs.readFileSync("./tmp/quotation1.docx");
     const data = {
       quotationNo,
       date: moment(date).format("DD/MM/YYYY"),
       sales: quotation.salesName,
       reference,
+      otherReference,
       name: `${quotation.billToDetails.prefix.label}. ${quotation.billToDetails.name}`,
       address: quotation.billToDetails.address,
       road: quotation.billToDetails.road,

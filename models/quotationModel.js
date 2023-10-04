@@ -13,8 +13,7 @@ const shipToSchema = new mongoose.Schema({
   serviceDetails: [
     {
       treatmentLocation: { type: String, required: true },
-      services: [Object],
-      frequency: { type: Object, required: true },
+      service: [Object],
       cost: { type: String, required: true },
       costFrequency: { type: Object, required: true },
     },
