@@ -9,6 +9,7 @@ import cookieParser from "cookie-parser";
 
 import quotationRoute from "./routes/quotationRoute.js";
 import userRoute from "./routes/userRoute.js";
+import adminRoute from "./routes/adminRoute.js";
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.use(fileUpload({ useTempFiles: true }));
 if (process.env.NODE_ENV !== "production") app.use(morgan("dev"));
 
 app.use("/api/user", userRoute);
+app.use("/api/admin", adminRoute);
 app.use("/api/quotation", quotationRoute);
 
 if (process.env.NODE_ENV === "production") {
