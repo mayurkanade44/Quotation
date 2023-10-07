@@ -15,5 +15,13 @@
 }
 
 .container {
-  margin: 20px 40px;
+  margin: 80px 40px 20px;
+}
+
+@media (max-width: 1023px) {
+ 
+  .container {
+    margin: 0px;
+    padding-left: 20px;
+  }
 }
