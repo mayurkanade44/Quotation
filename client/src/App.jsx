@@ -16,6 +16,8 @@ import {
   SingleQuotation,
 } from "./pages";
 import { Navbar } from "./components";
+import AdminRoute from "./components/AdminRoute";
+import Services from "./pages/Services";
 
 function App() {
   const Layout = () => {
@@ -32,9 +34,15 @@ function App() {
       <Route path="/" element={<Layout />}>
         <Route path="/quotations" element={<AllQuotation />} />
         <Route path="/new-quotation" element={<NewQuotation />} />
-        <Route path="/admin" element={<Admin />} />
+
         <Route path="/quotation-details/:id" element={<SingleQuotation />} />
         <Route path="/edit-quotation/:id" element={<EditQuotation />} />
+
+        {/* Admin users */}
+        <Route path="" element={<AdminRoute />}>
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/admin/services" element={<Services />} />
+        </Route>
       </Route>
     )
   );
