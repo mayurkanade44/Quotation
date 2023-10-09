@@ -4,11 +4,15 @@ import { useForm, Controller } from "react-hook-form";
 import InputRow from "../InputRow";
 import Modal from "./Modal";
 import { toast } from "react-toastify";
-import { useAddAdminValueMutation } from "../../redux/adminSlice";
+import {
+  useAddAdminValueMutation,
+  useUpdateAdminValueMutation,
+} from "../../redux/adminSlice";
 
-const AddServiceModal = ({ label, editData }) => {
+const AddServiceModal = ({ label, editData, service, id }) => {
   const [open, setOpen] = useState(false);
   const [addAdminValues, { isLoading }] = useAddAdminValueMutation();
+  const [editValue, { isLoading: editLoading }] = useUpdateAdminValueMutation();
 
   const {
     register,
@@ -29,14 +33,25 @@ const AddServiceModal = ({ label, editData }) => {
 
   const submit = async (form) => {
     let data = {};
-    if (label === "Add Sale Person") {
+    if (service === "Sales Person") {
       data.salePerson = {
         label: form.label,
         value: form.value,
       };
     }
+    if (service === "All Business") {
+      data.business = {
+        label: form.label,
+        value: form.label,
+      };
+    }
     try {
-      const res = await addAdminValues(data).unwrap();
+      let res;
+      if (id) {
+        res = await editValue({ data, id }).unwrap();
+      } else {
+        res = await addAdminValues(data).unwrap();
+      }
       toast.success(res.msg);
       setOpen(false);
       reset();
@@ -71,6 +86,26 @@ const AddServiceModal = ({ label, editData }) => {
       </p>
     </div>
   );
+
+  if (service === "All Business") {
+    bodyContent = (
+      <div className="">
+        <h4 className="text-center font-medium">
+          {editData ? "Update Business" : "New Business"}
+        </h4>
+        <InputRow
+          label="Business Name"
+          id="label"
+          errors={errors}
+          register={register}
+          type="text"
+        />
+        <p className="text-xs text-red-500 -bottom-4 pl-1">
+          {errors.label && "Business name is required"}
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div>
