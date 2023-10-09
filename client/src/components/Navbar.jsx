@@ -44,7 +44,7 @@ const Navbar = () => {
       <nav className="h-16 flex items-center lg:items-stretch justify-center lg:justify-between bg-gray-50 shadow z-10   ">
         <div className="hidden lg:flex w-full pr-6">
           <div className="w-1/3 h-full hidden lg:flex items-center pl-6 pr-24">
-            Ecporn Portal
+            Epcorn Portal
           </div>
           <div className="w-1/3 hidden lg:flex">
             <div className="w-full flex items-center justify-center">

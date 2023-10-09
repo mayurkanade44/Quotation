@@ -1,17 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, ContactTable, Loading, ProgressSteps } from "../components";
 import {
   GeneralDetails,
   BillToDetails,
   ShipToDetails,
 } from "../components/QuotationForm";
-
 import { useDispatch, useSelector } from "react-redux";
 import { useCreateQuotationMutation } from "../redux/quotationSlice";
 import { toast } from "react-toastify";
-import { clearQuotationEdit, setQuotationEdit } from "../redux/helperSlice";
+import {
+  clearQuotationEdit,
+  setAdminValues,
+  setQuotationEdit,
+} from "../redux/helperSlice";
 import { useNavigate } from "react-router-dom";
 import { saveAs } from "file-saver";
+import { useGetAdminValuesQuery } from "../redux/adminSlice";
 
 const step = [
   { id: "01", name: "General Details", status: "current" },
@@ -26,7 +30,14 @@ const NewQuotation = () => {
   const navigate = useNavigate();
   const { quotationDetails } = useSelector((store) => store.helper);
   const [createQuotation, { isLoading }] = useCreateQuotationMutation();
+  const { data, isLoading: adminLoading, error } = useGetAdminValuesQuery();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (data) {
+      dispatch(setAdminValues({ data }));
+    }
+  }, [data]);
 
   const handleNext = (name) => {
     setSteps(
@@ -81,7 +92,7 @@ const NewQuotation = () => {
 
   return (
     <>
-      {isLoading ? (
+      {isLoading || adminLoading ? (
         <Loading />
       ) : (
         <>

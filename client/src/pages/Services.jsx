@@ -104,25 +104,25 @@ const Services = () => {
                     <tbody className="w-full">
                       {data.salesPerson?.map((item) => (
                         <tr
-                          key={item._id}
+                          key={item.id}
                           className="h-8 text-sm leading-none text-gray-700 border-b dark:border-neutral-500 bg-white hover:bg-gray-100"
                         >
                           <td className="px-3 border-r font-normal dark:border-neutral-500">
-                            {item.salePerson.label}
+                            {item.label}
                           </td>
                           <td className="px-3 border-r font-normal dark:border-neutral-500">
-                            {item.salePerson.value}
+                            {item.value}
                           </td>
                           <td className="px-3 border-r flex font-normal dark:border-neutral-500">
                             <AddServiceModal
                               label="Edit"
                               editData={item.salePerson}
                               service={service}
-                              id={item._id}
+                              id={item.id}
                             />
                             <DeleteServiceModal
                               description="Sale person"
-                              id={item._id}
+                              id={item.id}
                             />
                           </td>
                         </tr>
@@ -152,22 +152,22 @@ const Services = () => {
                   <tbody className="w-full">
                     {data.business?.map((item) => (
                       <tr
-                        key={item._id}
+                        key={item.id}
                         className="h-8 text-sm leading-none text-gray-700 border-b dark:border-neutral-500 bg-white hover:bg-gray-100"
                       >
                         <td className="px-3 border-r font-normal dark:border-neutral-500">
-                          {item.business.label}
+                          {item.label}
                         </td>
                         <td className="px-3 border-r flex font-normal dark:border-neutral-500">
                           <AddServiceModal
                             label="Edit"
                             editData={item.business}
                             service={service}
-                            id={item._id}
+                            id={item.id}
                           />
-                          <AddServiceModal
-                            label="Delete"
-                            editData={item.salePerson}
+                          <DeleteServiceModal
+                            description="Business"
+                            id={item.id}
                           />
                         </td>
                       </tr>

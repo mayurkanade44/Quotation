@@ -142,7 +142,7 @@ const SingleQuotation = () => {
         error && <AlertMessage>{error?.data?.msg || error.error}</AlertMessage>
       )}
       {quotation && (
-        <>
+        <div className="mt-20">
           <div className="md:grid md:grid-cols-12">
             <div className="col-span-7 mb-2">
               <h1 className="text-[25px] font-bold text-center">
@@ -487,7 +487,7 @@ const SingleQuotation = () => {
               ))}
             </div> */}
           </div>
-        </>
+        </div>
       )}
     </div>
   );

@@ -21,7 +21,7 @@ const InputSelect = ({
         className="basic-multi-select"
         isClearable
         options={options}
-        value={options.find((c) => c.value === value?.value)}
+        value={options?.find((c) => c.value === value?.value)}
         onChange={(val) => onChange(val)}
         styles={{
           control: (baseStyles, state) => ({

@@ -1,6 +1,5 @@
 import { Button, InputRow, InputSelect, Loading } from "..";
 import { useForm, Controller } from "react-hook-form";
-import { business, sales } from "../../utils/constData";
 import { useDispatch, useSelector } from "react-redux";
 import {
   clearQuotationEdit,
@@ -13,7 +12,7 @@ import { toast } from "react-toastify";
 const GeneralDetails = ({ handleNext }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { quotationDetails, quotationEdit } = useSelector(
+  const { quotationDetails, quotationEdit, adminValues } = useSelector(
     (store) => store.helper
   );
 
@@ -64,7 +63,7 @@ const GeneralDetails = ({ handleNext }) => {
           rules={{ required: "Sales person name is required" }}
           render={({ field: { onChange, value, ref } }) => (
             <InputSelect
-              options={sales}
+              options={adminValues.salesPerson}
               onChange={onChange}
               value={value}
               label="Sales Person"
@@ -98,7 +97,7 @@ const GeneralDetails = ({ handleNext }) => {
           rules={{ required: "Business name is required" }}
           render={({ field: { onChange, value, ref } }) => (
             <InputSelect
-              options={business}
+              options={adminValues.business}
               onChange={onChange}
               value={value}
               label="Type Of Business"

@@ -15,11 +15,22 @@ export const getAllValues = async (req, res) => {
   try {
     const values = await Admin.find();
 
-    const salesPerson = values.filter(
-      (item) => item.salePerson && item.salePerson !== null
-    );
-    const business = values.filter(
-      (item) => item.business && item.business !== null
+    const salesPerson = [];
+    const business = [];
+    values.map(
+      (item) =>
+        (item.salePerson &&
+          salesPerson.push({
+            id: item._id,
+            label: item.salePerson.label,
+            value: item.salePerson.value,
+          })) ||
+        (item.business &&
+          business.push({
+            id: item._id,
+            label: item.business.label,
+            value: item.business.value,
+          }))
     );
 
     return res.json({ salesPerson, business });
