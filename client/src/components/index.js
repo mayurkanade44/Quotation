@@ -7,7 +7,7 @@ import ContactTable from "./ContactTable";
 import AlertMessage from "./AlertMessage";
 import ProgressSteps from "./ProgressSteps";
 import Navbar from "./Navbar";
-
+import AdminRoute from "./AdminRoute";
 
 export {
   InputRow,
@@ -19,4 +19,5 @@ export {
   AlertMessage,
   ProgressSteps,
   Navbar,
+  AdminRoute,
 };

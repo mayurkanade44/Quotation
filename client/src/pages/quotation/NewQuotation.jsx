@@ -1,21 +1,21 @@
 import { useEffect, useState } from "react";
-import { Button, ContactTable, Loading, ProgressSteps } from "../components";
+import { Button, ContactTable, Loading, ProgressSteps } from "../../components";
 import {
   GeneralDetails,
   BillToDetails,
   ShipToDetails,
-} from "../components/QuotationForm";
+} from "../../components/QuotationForm";
 import { useDispatch, useSelector } from "react-redux";
-import { useCreateQuotationMutation } from "../redux/quotationSlice";
+import { useCreateQuotationMutation } from "../../redux/quotationSlice";
 import { toast } from "react-toastify";
 import {
   clearQuotationEdit,
   setAdminValues,
   setQuotationEdit,
-} from "../redux/helperSlice";
+} from "../../redux/helperSlice";
 import { useNavigate } from "react-router-dom";
 import { saveAs } from "file-saver";
-import { useGetAdminValuesQuery } from "../redux/adminSlice";
+import { useGetAdminValuesQuery } from "../../redux/adminSlice";
 
 const step = [
   { id: "01", name: "General Details", status: "current" },

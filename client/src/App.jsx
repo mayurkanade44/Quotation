@@ -9,15 +9,14 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import {
-  Admin,
   AllQuotation,
   EditQuotation,
   NewQuotation,
   SingleQuotation,
-} from "./pages";
-import { Navbar } from "./components";
-import AdminRoute from "./components/AdminRoute";
-import Services from "./pages/Services";
+} from "./pages/quotation";
+import { Services, Users } from "./pages/admin";
+
+import { Navbar, AdminRoute } from "./components";
 
 function App() {
   const Layout = () => {
@@ -40,7 +39,7 @@ function App() {
 
         {/* Admin users */}
         <Route path="" element={<AdminRoute />}>
-          <Route path="/admin" element={<Admin />} />
+          <Route path="/admin" element={<Users />} />
           <Route path="/admin/services" element={<Services />} />
         </Route>
       </Route>

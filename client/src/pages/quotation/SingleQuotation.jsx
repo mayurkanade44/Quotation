@@ -4,15 +4,15 @@ import {
   useEditQuotationMutation,
   useReviseQuotationMutation,
   useSingleQuotationQuery,
-} from "../redux/quotationSlice";
-import { AlertMessage, Button, Loading } from "../components";
+} from "../../redux/quotationSlice";
+import { AlertMessage, Button, Loading } from "../../components";
 import { useDispatch, useSelector } from "react-redux";
-import { setQuotationDetails, setQuotationEdit } from "../redux/helperSlice";
+import { setQuotationDetails, setQuotationEdit } from "../../redux/helperSlice";
 import { useEffect, useState } from "react";
-import DeleteModal from "../components/Modals/DeleteModal";
+import DeleteModal from "../../components/Modals/DeleteModal";
 import { toast } from "react-toastify";
-import SendEmail from "../components/Modals/EmailModal";
-import { QuotationHistoryModal, QuotationModal } from "../components/Modals";
+import SendEmail from "../../components/Modals/EmailModal";
+import { QuotationHistoryModal, QuotationModal } from "../../components/Modals";
 
 const SingleQuotation = () => {
   const { id: quotationId } = useParams();

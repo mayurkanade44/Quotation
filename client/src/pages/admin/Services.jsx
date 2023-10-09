@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { AlertMessage, Button, Loading } from "../components";
-import { AddServiceModal, DeleteServiceModal } from "../components/Modals";
-import { useGetAdminValuesQuery } from "../redux/adminSlice";
+import { AlertMessage, Button, Loading } from "../../components";
+import { AddServiceModal, DeleteServiceModal } from "../../components/Modals";
+import { useGetAdminValuesQuery } from "../../redux/adminSlice";
 
 const projects = [
   {

@@ -3,7 +3,7 @@ import {
   BillToDetails,
   GeneralDetails,
   ShipToDetails,
-} from "../components/QuotationForm";
+} from "../../components/QuotationForm";
 
 const EditQuotation = () => {
   const { quotationEdit } = useSelector((store) => store.helper);
