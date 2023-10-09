@@ -3,8 +3,6 @@ import InputSelect from "../InputSelect";
 import { service, serviceFrequency } from "../../utils/constData";
 import { CiCircleRemove } from "react-icons/ci";
 import { IoMdAddCircleOutline } from "react-icons/io";
-import InputRow from "../InputRow";
-import Button from "../Button";
 
 const AddService = ({ nestIndex, control, register, errors, Controller }) => {
   const { fields, append, remove } = useFieldArray({

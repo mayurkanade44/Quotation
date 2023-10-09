@@ -34,3 +34,10 @@ export const costFrequency = [
   { label: "Per Treatment", value: "Per Treatment" },
   { label: "Per Room", value: "Per Room" },
 ];
+
+export const roles = [
+  { label: "Sales", value: "Sales" },
+  { label: "Back Office", value: "Back Office" },
+  { label: "Operator", value: "Operator" },
+  { label: "Admin", value: "Admin" },
+];

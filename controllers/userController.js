@@ -15,7 +15,7 @@ export const registerUser = async (req, res) => {
       name: capitalLetter(name),
       email,
       password,
-      role,
+      role: role.label,
     });
 
     return res.status(201).send({ msg: `${user.name} is created` });

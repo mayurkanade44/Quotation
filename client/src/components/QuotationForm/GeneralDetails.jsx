@@ -23,8 +23,6 @@ const GeneralDetails = ({ handleNext }) => {
     formState: { errors, isValid },
     handleSubmit,
     reset,
-    getValues,
-    setValue,
     control,
   } = useForm({
     defaultValues: quotationDetails.generalDetails || {
@@ -37,14 +35,22 @@ const GeneralDetails = ({ handleNext }) => {
   });
 
   const submit = async (data) => {
-    if (quotationEdit.status) {
-      const res = await editQuotation({ data, id: quotationEdit.id }).unwrap();
-      navigate(`/quotation-details/${quotationEdit.id}`);
-      toast.success(res.msg);
-      dispatch(clearQuotationEdit());
-    } else {
-      dispatch(setQuotationDetails({ name: "generalDetails", data }));
-      handleNext();
+    try {
+      if (quotationEdit.status) {
+        const res = await editQuotation({
+          data,
+          id: quotationEdit.id,
+        }).unwrap();
+        navigate(`/quotation-details/${quotationEdit.id}`);
+        toast.success(res.msg);
+        dispatch(clearQuotationEdit());
+      } else {
+        dispatch(setQuotationDetails({ name: "generalDetails", data }));
+        handleNext();
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.data?.msg || error.error);
     }
   };
 
@@ -78,7 +84,6 @@ const GeneralDetails = ({ handleNext }) => {
           id="referenceName"
           errors={errors}
           register={register}
-          type="text"
         />
         <p className="text-xs text-red-500 -bottom-4 pl-1">
           {errors.referenceName && "Reference name is required"}
@@ -88,7 +93,6 @@ const GeneralDetails = ({ handleNext }) => {
           id="otherReference"
           errors={errors}
           register={register}
-          type="text"
           required={false}
         />
         <Controller
@@ -112,7 +116,6 @@ const GeneralDetails = ({ handleNext }) => {
           id="payment"
           errors={errors}
           register={register}
-          type="text"
         />
         <p className="text-xs text-red-500 -bottom-4 pl-1">
           {errors.payment && "Payments terms is required"}
