@@ -15,6 +15,7 @@ const initialState = {
     id: null,
     name: "",
   },
+  adminValues: {},
 };
 
 const helperSlice = createSlice({
@@ -55,11 +56,8 @@ const helperSlice = createSlice({
         shipToDetails: [],
       };
     },
-    setFetchQuotationDetails: (state, action) => {
-      const { generalDetails, billToDetails, shipToDetails } = action.payload;
-      state.quotationDetails.billToDetails = billToDetails;
-      state.quotationDetails.generalDetails = generalDetails;
-      state.quotationDetails.shipToDetails = shipToDetails;
+    setAdminValues: (state, action) => {
+      state.adminValues = action.payload.data;
     },
   },
 });
@@ -70,7 +68,7 @@ export const {
   setQuotationDetails,
   setQuotationEdit,
   clearQuotationEdit,
-  setFetchQuotationDetails,
+  setAdminValues,
 } = helperSlice.actions;
 
 export default helperSlice.reducer;

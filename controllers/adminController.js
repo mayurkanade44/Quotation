@@ -10,3 +10,21 @@ export const addValue = async (req, res) => {
     res.status(500).json({ msg: "Server error, try again later" });
   }
 };
+
+export const getValues = async (req, res) => {
+  try {
+    const values = await Admin.find();
+
+    const salesPerson = values.filter(
+      (item) => item.salePerson && item.salePerson !== null
+    );
+    const business = values.filter(
+      (item) => item.business && item.business !== null
+    );
+
+    return res.json({ salesPerson, business });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "Server error, try again later" });
+  }
+};

@@ -9,7 +9,12 @@ export const adminSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    getAdminValues: builder.query({
+      query: () => ({
+        url: "/api/admin/value",
+      }),
+    }),
   }),
 });
 
-export const { useAddAdminValueMutation } = adminSlice;
+export const { useAddAdminValueMutation, useGetAdminValuesQuery } = adminSlice;
