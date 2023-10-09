@@ -8,11 +8,13 @@ export const adminSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["Admin"],
     }),
     getAdminValues: builder.query({
       query: () => ({
         url: "/api/admin/value",
       }),
+      providesTags: ["Admin"],
     }),
     updateAdminValue: builder.mutation({
       query: ({ data, id }) => ({
@@ -20,12 +22,14 @@ export const adminSlice = apiSlice.injectEndpoints({
         method: "PUT",
         body: data,
       }),
+      invalidatesTags: ["Admin"],
     }),
     deleteAdminValue: builder.mutation({
       query: ({ id }) => ({
         url: `/api/admin/value/${id}`,
         method: "DELETE",
       }),
+      invalidatesTags: ["Admin"],
     }),
   }),
 });

@@ -84,7 +84,7 @@ const Services = () => {
               <>
                 <div className="flex justify-around items-center">
                   <h3>All Sales Person</h3>
-                  <AddServiceModal label="Add Sale Person" />
+                  <AddServiceModal label="Add Sale Person" service={service} />
                 </div>
                 <div className="overflow-y-auto my-2">
                   <table className="w-full border whitespace-nowrap  dark:border-neutral-500">
