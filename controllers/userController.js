@@ -60,3 +60,18 @@ export const updateUser = async (req, res) => {
     res.status(500).json({ msg: "Server error, try again later" });
   }
 };
+
+export const changePassword = async (req, res) => {
+  try {
+    let user = await User.findById({ id: req.params.id });
+    if (!user) return res.status(404).json({ msg: "User not found" });
+
+    user.password = req.body.password;
+    await user.save();
+
+    return res.json({ msg: "Password updated" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "Server error, try again later" });
+  }
+};

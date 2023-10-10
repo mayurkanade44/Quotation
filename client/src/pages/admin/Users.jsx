@@ -180,6 +180,7 @@ const Users = () => {
                 </td>
                 <td className="px-3 border-r flex font-normal dark:border-neutral-500">
                   <Button label="Edit" onClick={() => editUser(user)} />
+                  <Button label="Change Password" color="bg-gray-600" />
                 </td>
               </tr>
             ))}
