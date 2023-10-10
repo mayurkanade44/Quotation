@@ -8,8 +8,27 @@ export const userSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["User"],
+    }),
+    allUser: builder.query({
+      query: () => ({
+        url: "/api/user",
+      }),
+      providesTags: ["User"],
+    }),
+    updateUser: builder.mutation({
+      query: ({ data, id }) => ({
+        url: `/api/user/update/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["User"],
     }),
   }),
 });
 
-export const { useRegisterUserMutation } = userSlice;
+export const {
+  useRegisterUserMutation,
+  useAllUserQuery,
+  useUpdateUserMutation,
+} = userSlice;

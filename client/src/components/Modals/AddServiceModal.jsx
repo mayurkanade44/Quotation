@@ -117,14 +117,14 @@ const AddServiceModal = ({ label, editData, service, id }) => {
             <div className="flex gap-4 pt-3">
               <button
                 type="submit"
-                className="btn bg-green-600 w-full rounded-md text-white py-1 cursor-pointer"
+                className="btn bg-green-600 w-full rounded-md text-white py-2 cursor-pointer"
               >
                 Save
               </button>
               <button
                 onClick={() => setOpen(false)}
                 type="button"
-                className="btn bg-gray-200 w-full rounded-md text-dark py-1 font-semibold cursor-pointer"
+                className="btn bg-gray-200 w-full rounded-md text-dark py-2 font-semibold cursor-pointer"
               >
                 Cancel
               </button>
